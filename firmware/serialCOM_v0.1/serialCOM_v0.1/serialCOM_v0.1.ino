@@ -7,7 +7,54 @@
 // NOTES:
 // (1) All values are reported to the arduino in steps (not mm or any other units!)
 // (2) With 32 microstepping, and a 200 step motor, there are effectively 6400 steps per rev
-// (3) 
+// (3) The reporting the distance left will reutnr "steps remaining"
+
+// ======================================================
+// ACCELSTEPPER FUNCTIONS: returns fncName(argtype arg) [description]
+// ======================================================
+
+// SETTINGS
+// --------
+// void setMaxSpeed(float speed>0)            [run() will accelerate to speed in steps per sec]
+// void setAcceleration(float acceleration>0) [sets the accel in steps per sec per sec]
+// void setSpeed(float speed)                 [runSpeed() will use this amount. >0 is clockwise, <0 counterclockwise]
+
+// #########I DON'T USE THESE###########
+// void setMinPulseWidth(unsignedint minWidth)
+// void setEnablePin(uint8_t enablePin=0xff)
+// void setPinsInverted(bool directionInvert=false, bool stepInvert=false, bool enableInvert=false)
+// void setPinsInverted (bool pin1Invert, bool pin2Invert, bool pin3Invert, bool pin4Invert, bool enableInvert)
+// #########I DON'T USE THESE###########
+
+// SET MOVEMENT
+// ------------
+// void moveTo(long absolute)
+// void move(long relative)
+// void setCurrentPosition(long position)      [resets the current position of the motor to ZERO. this is the ZERO!! side effect: sets speed=0]
+
+// RUN
+// -----------
+// void runToPosition()                        [BLOCKING; moves with accel and decell to target (runToNewPosition()) calls this fnc, then this calls run()]
+// void runToNewPosition(long position)        [BLOCKING; moves with accel and deccel to target position (absolute position) moves with run()]
+// bool run()                                  [move motor one step if a step is due. this implements accel and decell. uses setMaxSpeed]
+// bool runSpeed()                             [move motor one step if a step is due. does not implement accel and decell (ie inf accel). uses setSpeed()]
+// bool runSpeedToPosition()                   [runs at currently selected speed until target position is reached, does not use accel]
+// void stop()                                 [changes target pos s.t. stepper stops as quickly as possible. uses accel and decell]
+// void disableOutputs()
+// void enableOutputs()
+
+// I am confused how the calls work for these functions. need to review
+
+// GETTERS
+// ------------
+// long distanceToGo()                         [returns distance in steps from targetPosition. >0 is clockwise from current pos, <0 ccw]
+// long targetPosition()                       [the most recently set target pos, >0 is cw from the ZERO and <0 is ccw from current]
+// long currentPosition()                      [current motor position >0 cw from the ZERO position 
+// bool isRunning()
+// float maxSpeed()
+// float speed()
+
+// =============================== Code starts here ================================================================
 
 #include <AccelStepper.h>
 
