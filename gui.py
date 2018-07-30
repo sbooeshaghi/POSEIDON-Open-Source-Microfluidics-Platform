@@ -229,6 +229,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		# Setting camera action buttons
 		self.ui.camera_connect_BTN.clicked.connect(self.start_camera)
 		self.ui.camera_disconnect_BTN.clicked.connect(self.stop_camera)
+		self.ui.camera_capture_image_BTN.clicked.connect(self.save_image)
 
 		# ~~~~~~~~~~~
 		# TAB : Setup
@@ -532,7 +533,15 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	# Save image to set location
 	def save_image(self):
-		pass
+		# Create a date string
+		self.date_string =  datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+		# Replace semicolons with underscores
+		self.date_string = self.date_string.replace(":","_")
+		self.write_image_loc = './images/'+self.date_string + '.png'
+		cv2.imwrite(self.write_image_loc, self.image)
+		self.statusBar().showMessage("Captured Image, saved to: " + self.write_image_loc)
+
 
 	# Stop camera
 	def stop_camera(self):
@@ -594,7 +603,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		# Replace semicolons with underscores
 		self.date_string = self.date_string.replace(":","_")
 
-		self.log_file_name = self.ui.log_file_name_INPUT.text() + "_" + self.date_string + ".txt"
+		self.log_file_name = self.ui.log_file_name_INPUT.text() + "_" + self.date_string + ".png"
 
 	def save_settings(self):
 		name, _ = QFileDialog.getSaveFileName(self,'Save File', options=QFileDialog.DontUseNativeDialog)
