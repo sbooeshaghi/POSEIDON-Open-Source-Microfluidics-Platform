@@ -396,23 +396,28 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		testData = []
 
 		active_pumps = self.get_active_pumps()
+		if len(active_pumps) > 0:
 
-		p1_input_displacement = str(self.convert_displacement(self.p1_amount, self.p1_units, self.p1_syringe_area))
-		p2_input_displacement = str(self.convert_displacement(self.p2_amount, self.p2_units, self.p2_syringe_area))
-		p3_input_displacement = str(self.convert_displacement(self.p3_amount, self.p3_units, self.p3_syringe_area))
+			p1_input_displacement = str(self.convert_displacement(self.p1_amount, self.p1_units, self.p1_syringe_area))
+			p2_input_displacement = str(self.convert_displacement(self.p2_amount, self.p2_units, self.p2_syringe_area))
+			p3_input_displacement = str(self.convert_displacement(self.p3_amount, self.p3_units, self.p3_syringe_area))
 
-		pumps_2_run = ''.join(map(str,active_pumps))
-		
-		cmd = "<RUN,DIST,"+pumps_2_run+",0.0,F," + p1_input_displacement + "," + p2_input_displacement + "," + p3_input_displacement + ">"
+			pumps_2_run = ''.join(map(str,active_pumps))
+			
+			cmd = "<RUN,DIST,"+pumps_2_run+",0.0,F," + p1_input_displacement + "," + p2_input_displacement + "," + p3_input_displacement + ">"
 
-		testData.append(cmd)
+			testData.append(cmd)
 
-		worker = Worker(self.runTest, testData)
+			worker = Worker(self.runTest, testData)
 
-		print("Sending Jog Information")
-		time.sleep(3)
-		self.threadpool.start(worker)
-		#self.runTest(testData)
+			print("Sending Jog Information")
+			time.sleep(3)
+			self.threadpool.start(worker)
+			#self.runTest(testData)
+				#send jog forward command
+		else:
+			self.statusBar().showMessage("No pumps enabled.")
+
 
 	def pause(self):
 		testData = []
