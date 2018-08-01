@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>707</width>
+    <width>715</width>
     <height>407</height>
    </rect>
   </property>
@@ -838,7 +838,7 @@
             <item row="2" column="4">
              <widget class="QDoubleSpinBox" name="p2_accel_INPUT">
               <property name="maximum">
-               <double>9999.989999999999782</double>
+               <double>99999.990000000005239</double>
               </property>
              </widget>
             </item>
@@ -868,7 +868,7 @@
             <item row="1" column="4">
              <widget class="QDoubleSpinBox" name="p1_accel_INPUT">
               <property name="maximum">
-               <double>9999.989999999999782</double>
+               <double>99999.990000000005239</double>
               </property>
              </widget>
             </item>
@@ -971,7 +971,7 @@
             <item row="3" column="4">
              <widget class="QDoubleSpinBox" name="p3_accel_INPUT">
               <property name="maximum">
-               <double>9999.989999999999782</double>
+               <double>99999.990000000005239</double>
               </property>
              </widget>
             </item>
@@ -1084,7 +1084,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>707</width>
+     <width>715</width>
      <height>22</height>
     </rect>
    </property>

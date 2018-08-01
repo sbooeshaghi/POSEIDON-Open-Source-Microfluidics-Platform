@@ -12,13 +12,13 @@
 
 // Motor steps per revolution. Most steppers are 200 steps or 1.8 degrees/step
 #define MOTOR_STEPS 200
-#define X_SPEED 200 // X steps per second
-#define Y_SPEED 200 // Y
-#define Z_SPEED 200 // Z
+#define X_SPEED 800000 // X steps per second
+#define Y_SPEED 800000 // Y
+#define Z_SPEED 800000 // Z
 
-#define X_ACCEL 10000.0 // X steps per second per second
-#define Y_ACCEL 10000.0 // Y
-#define Z_ACCEL 10000.0 // Z
+#define X_ACCEL 1000000.0 // X steps per second per second
+#define Y_ACCEL 1000000.0 // Y
+#define Z_ACCEL 1000000.0 // Z
 
 #define EN        8       // stepper motor enable, low level effective (note put jumper so automatic)
 
@@ -45,13 +45,13 @@ void setup()
     stepper2.setAcceleration(Y_ACCEL);
     stepper3.setAcceleration(Z_ACCEL);
     
-    stepper1.move(1000);
-    stepper2.move(1000);
-    stepper3.move(1000); 
+    stepper1.move(100000);
+    stepper2.move(100000);
+    stepper3.move(100000); 
 }
 void loop()
 {
-    stepper1.runSpeed();
-    stepper2.runSpeed();
-    stepper3.runSpeed();
+    stepper1.runSpeedToPosition();
+    stepper2.runSpeedToPosition();
+    stepper3.runSpeedToPosition();
 }

@@ -153,6 +153,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.set_p2_units()
 		self.set_p3_units()
 
+		self.is_p1_active = False
+		self.is_p2_active = False
+		self.is_p3_active = False
 
 		
 		#self.set_p2_speed()
@@ -391,8 +394,18 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	def run(self):
 		self.statusBar().showMessage("You clicked Run")
 		testData = []
-		xJog = str(self.mm2steps(10)) #converts from mm -,F,0.0> steps
-		testData.append("<JOG,ONE,1," + xJog + ",F,0.0>")
+
+		active_pumps = self.get_active_pumps()
+
+		p1_input_displacement = str(self.convert_displacement(self.p1_amount, self.p1_units, self.p1_syringe_area))
+		p2_input_displacement = str(self.convert_displacement(self.p2_amount, self.p2_units, self.p2_syringe_area))
+		p3_input_displacement = str(self.convert_displacement(self.p3_amount, self.p3_units, self.p3_syringe_area))
+
+		pumps_2_run = ''.join(map(str,active_pumps))
+		
+		cmd = "<RUN,DIST,"+pumps_2_run+",0.0,F," + p1_input_displacement + "," + p2_input_displacement + "," + p3_input_displacement + ">"
+
+		testData.append(cmd)
 
 		worker = Worker(self.runTest, testData)
 
@@ -402,32 +415,23 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		#self.runTest(testData)
 
 	def pause(self):
-		return
+		testData = []
+		cmd = "<RESUME,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
+		testData.append(cmd)
+		worker = Worker(self.runTest, testData)
+		self.threadpool.start(worker)
+
+	def resume(self):
+		cmd = "<RESUME,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
+		testData.append(cmd)
+		worker = Worker(self.runTest, testData)
+		self.threadpool.start(worker)
+
 	def zero(self):
 		self.statusBar().showMessage("You clicked Zero")
 		testData = []
-		xSpeed = str(self.mm2steps(10)) # converts from mm/sec -,F,0.0> steps/sec
-		ySpeed = str(self.mm2steps(10))
-		zSpeed = str(self.mm2steps(10))
 
-		xAccel = str(self.mm2steps(10)) # converts from mm/sec^2 -,F,0.0> steps/sec^2
-		yAccel = str(self.mm2steps(10))
-		zAccel = str(self.mm2steps(10))
-
-		xDelta = str(self.mm2steps(10)) # converts from mm -,F,0.0> steps
-		yDelta = str(self.mm2steps(10))
-		zDelta = str(self.mm2steps(10))
-		testData.append("<SETTING,SPEED,1," + xSpeed + ",F,0.0>") # Steps per second
-		testData.append("<SETTING,SPEED,2," + xSpeed + ",F,0.0>") # Steps per second
-		testData.append("<SETTING,SPEED,3," + xSpeed + ",F,0.0>") # Steps per second
-		
-		testData.append("<SETTING,ACCEL,1," + xAccel + ",F,0.0>")
-		testData.append("<SETTING,ACCEL,2," + yAccel + ",F,0.0>")
-		testData.append("<SETTING,ACCEL,3," + zAccel + ",F,0.0>")
-		
-		testData.append("<SETTING,DELTA,1," + xDelta + ",F,0.0>")
-		testData.append("<SETTING,DELTA,2," + yDelta + ",F,0.0>")
-		testData.append("<SETTING,DELTA,3," + zDelta + ",F,0.0>")
+		cmd = "<ZERO,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
 		
 		worker = Worker(self.runTest, testData)
 		print("Sending Setup Information")
@@ -435,62 +439,46 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.threadpool.start(worker)
 
 	def stop(self):
-		cmd = "<STOP,BLAH,BLAH,BLAH,F,0.0>"
+		cmd = "<STOP,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
 
 		worker = Worker(self.send_single_command, cmd)
 		print("Stopping")
 		self.threadpool.start(worker)
 
 	def jog(self, btn):
-		# TODO
-		#before any move check which ones are active
 		#self.serial.flushInput()
 		testData = []
-		#active_pumps = self.get_active_pumps()
-		#jog_cmd = []
-		#if len(active_pumps) != 0 :
-		#	self.serial.flushInput(). 
-		#	for actve_pump in active_pumps:
-		#		"<JOG,FEW,"+str(active_pump)+"0,F,0.0>"
+		active_pumps = self.get_active_pumps()
+		if len(active_pumps) > 0:
+			pumps_2_run = ''.join(map(str,active_pumps))
 
-		
-		#	chosenDirection = str(self.direction[direction])
+			one_jog = str(self.p1_setup_jog_delta_to_send)
+			two_jog = str(self.p2_setup_jog_delta_to_send)
+			three_jog = str(self.p3_setup_jog_delta_to_send)
+				 
+			if btn.text() == "Jog +":
+				f_cmd = "<RUN,DIST," + pumps_2_run +",0,F," + one_jog + "," + two_jog + "," + three_jog + ">"
+				testData.append(f_cmd)
 
-		#xDelta = float(self.ui.p1_jog_delta_INPUT.value())
-		#yDelta = float(self.ui.p2_jog_delta_INPUT.value())
-		#zDelta = float(self.ui.p3_jog_delta_INPUT.value())
+				worker = Worker(self.runTest, testData)
 
-			 
-		if btn.text() == "Jog +":
-			#xJog = str(self.mm2steps(xDelta)) #converts from mm -,F,0.0> steps
-			#yJog = str(self.mm2steps(yDelta)) #converts from mm -,F,0.0> steps
-			#zJog = str(self.mm2steps(zDelta)) #converts from mm -,F,0.0> steps
+				print("Sending Jog Information")
+				#time.sleep(3)
+				self.threadpool.start(worker)
+				#send jog forward command
+			if btn.text() == "Jog -":
+				#add optional argument for direction
+				b_cmd = "<RUN,DIST," + pumps_2_run +",0,B," + one_jog + "," + two_jog + "," + three_jog + ">"
+				testData.append(b_cmd)
 
-			#testData.append("<JOG,ONE,1," + xJog + ",F,0.0>")
-			#testData.append("<JOG,ONE,2," + yJog + ",F,0.0>")
-			#testData.append("<JOG,ONE,3," + zJog + ",F,0.0>")
+				worker = Worker(self.runTest, testData)
 
-			#testData.append("<JOG,ALL,1,1,F,0.0>")
-			testData = []
-			testData.append("<JOG,ALL,123,0,F,0.0>")
-
-			worker = Worker(self.runTest, testData)
-
-			print("Sending Jog Information")
-			#time.sleep(3)
-			self.threadpool.start(worker)
-			#send jog forward command
-		if btn.text() == "Jog -":
-			testData = []
-			#add optional argument for direction
-			testData.append("<JOG,ALL,123,0,B,0.0>")
-
-			worker = Worker(self.runTest, testData)
-
-			print("Sending Jog Information")
-			#time.sleep(3)
-			self.threadpool.start(worker)
-			#send jog forward command
+				print("Sending Jog Information")
+				#time.sleep(3)
+				self.threadpool.start(worker)
+				#send jog forward command
+		else:
+			self.statusBar().showMessage("No pumps enabled.")
 
 	# ======================
 	# FUNCTIONS : Camera
@@ -622,6 +610,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		p1_speed = str(self.p1_speed)
 		p1_accel = str(self.p1_accel)
 		p1_setup_jog_delta = str(self.p1_setup_jog_delta)
+		print(p1_setup_jog_delta)
 
 		## Settings for pump 2
 		p2_syringe = str(self.p2_syringe)
@@ -672,6 +661,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			# here is where you load all of your variables
 			# reformatting the text
 			text = [line.split(':')[-1].strip('\n')[1:] for line in text]
+			print(text)
 			fname = text[0]
 			date_string = text[1]
 
@@ -702,10 +692,15 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.p1_speed_INPUT.setValue(float(p1_speed))
 		self.ui.p1_accel_INPUT.setValue(float(p1_accel))
 		print('==================')
-		print(p1_setup_jog_delta)
+		print("This is the jog: ", p1_setup_jog_delta)
 		print('type: ', str(type(p1_setup_jog_delta)))
 		print('==================')
+		AllItems = [self.ui.p1_setup_jog_delta_INPUT.itemText(i) for i in range(self.ui.p1_setup_jog_delta_INPUT.count())]
+		print("This is the list of jogs: ",AllItems)
+
 		p1_setup_jog_delta_index = self.ui.p1_setup_jog_delta_INPUT.findText(p1_setup_jog_delta, QtCore.Qt.MatchFixedString)
+		
+		print("p1_setup_jog_delta_index is: ",p1_setup_jog_delta_index)
 		self.ui.p1_setup_jog_delta_INPUT.setCurrentIndex(p1_setup_jog_delta_index)
 
 
@@ -730,6 +725,8 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		p3_setup_jog_delta_index = self.ui.p3_setup_jog_delta_INPUT.findText(p3_setup_jog_delta, QtCore.Qt.MatchFixedString)
 		self.ui.p3_setup_jog_delta_INPUT.setCurrentIndex(p3_setup_jog_delta_index)
 
+		self.statusBar().showMessage("Settings loaded from: " + text[1])
+
 
 	# Populate the list of possible syringes to the dropdown menus
 	def populate_syringe_sizes(self):
@@ -745,12 +742,15 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	def set_p1_syringe(self):
 		self.p1_syringe = self.ui.p1_syringe_DROPDOWN.currentText()
 		self.p1_syringe_area = self.syringe_areas[self.syringe_options.index(self.p1_syringe)]
+		self.display_p1_syringe()
 	def set_p2_syringe(self):
 		self.p2_syringe = self.ui.p2_syringe_DROPDOWN.currentText()
 		self.p2_syringe_area = self.syringe_areas[self.syringe_options.index(self.p2_syringe)]
+		self.display_p2_syringe()
 	def set_p3_syringe(self):
 		self.p3_syringe = self.ui.p3_syringe_DROPDOWN.currentText()
 		self.p3_syringe_area = self.syringe_areas[self.syringe_options.index(self.p3_syringe)]
+		self.display_p3_syringe()
 
 	# Set Px units 
 	def set_p1_units(self):
@@ -758,16 +758,19 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.set_p1_speed()
 		self.set_p1_accel()
 		self.set_p1_setup_jog_delta()
+		self.set_p1_amount()
 	def set_p2_units(self):
 		self.p2_units = self.ui.p2_units_DROPDOWN.currentText()
 		self.set_p2_speed()
 		self.set_p2_accel()
 		self.set_p2_setup_jog_delta()
+		self.set_p2_amount()
 	def set_p3_units(self):
 		self.p3_units = self.ui.p3_units_DROPDOWN.currentText()
 		self.set_p3_speed()
 		self.set_p3_accel()
 		self.set_p3_setup_jog_delta()
+		self.set_p3_amount()
 
 
 	def populate_pump_units(self):
@@ -778,7 +781,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.p3_units_DROPDOWN.addItems(self.units)
 
 	def populate_pump_jog_delta(self):
-		self.jog_delta = ['0.01', '0.10', '1.00', '10.00']
+		self.jog_delta = ['0.01', '0.1', '1.0', '10.0']
 		print("I DID THIS")
 		self.ui.p1_setup_jog_delta_INPUT.addItems(self.jog_delta)
 		self.ui.p2_setup_jog_delta_INPUT.addItems(self.jog_delta)
@@ -818,6 +821,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	# Set Px jog delta (setup) TODO
 	def set_p1_setup_jog_delta(self):
+		self.p1_setup_jog_delta = self.ui.p1_setup_jog_delta_INPUT.currentText()
 		self.p1_setup_jog_delta = float(self.ui.p1_setup_jog_delta_INPUT.currentText())
 		self.p1_setup_jog_delta_to_send = self.convert_displacement(self.p1_setup_jog_delta, self.p1_units, self.p1_syringe_area)
 	def set_p2_setup_jog_delta(self):
@@ -830,9 +834,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	# Send Px settings
 	def send_p1_settings(self):
 		self.p1_settings = []
-		self.p1_settings.append("<SETTING,SPEED,1," + str(self.p1_speed_to_send) + ",F,0.0>")
-		self.p1_settings.append("<SETTING,ACCEL,1," + str(self.p1_accel_to_send) + ",F,0.0>")
-		self.p1_settings.append("<SETTING,DELTA,1," + str(self.p1_setup_jog_delta_to_send) + ",F,0.0>")
+		self.p1_settings.append("<SETTING,SPEED,1," + str(self.p1_speed_to_send) + ",F,0.0,0.0,0.0>")
+		self.p1_settings.append("<SETTING,ACCEL,1," + str(self.p1_accel_to_send) + ",F,0.0,0.0,0.0>")
+		self.p1_settings.append("<SETTING,DELTA,1," + str(self.p1_setup_jog_delta_to_send) + ",F,0.0,0.0,0.0>")
 
 		worker = Worker(self.runTest, self.p1_settings)
 
@@ -842,9 +846,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		
 	def send_p2_settings(self):
 		self.p2_settings = []
-		self.p2_settings.append("<SETTING,SPEED,2," + str(self.p2_speed_to_send) + ",F,0.0>")
-		self.p2_settings.append("<SETTING,ACCEL,2," + str(self.p2_accel_to_send) + ",F,0.0>")
-		self.p2_settings.append("<SETTING,DELTA,2," + str(self.p2_setup_jog_delta_to_send) + ",F,0.0>")
+		self.p2_settings.append("<SETTING,SPEED,2," + str(self.p2_speed_to_send) + ",F,0.0,0.0,0.0>")
+		self.p2_settings.append("<SETTING,ACCEL,2," + str(self.p2_accel_to_send) + ",F,0.0,0.0,0.0>")
+		self.p2_settings.append("<SETTING,DELTA,2," + str(self.p2_setup_jog_delta_to_send) + ",F,0.0,0.0,0.0>")
 
 		worker = Worker(self.runTest, self.p2_settings)
 
@@ -854,9 +858,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	def send_p3_settings(self):
 		self.p3_settings = []
-		self.p3_settings.append("<SETTING,SPEED,3," + str(self.p3_speed_to_send) + ",F,0.0>")
-		self.p3_settings.append("<SETTING,ACCEL,3," + str(self.p3_accel_to_send) + ",F,0.0>")
-		self.p3_settings.append("<SETTING,DELTA,3," + str(self.p3_setup_jog_delta_to_send) + ",F,0.0>")
+		self.p3_settings.append("<SETTING,SPEED,3," + str(self.p3_speed_to_send) + ",F,0.0,0.0,0.0>")
+		self.p3_settings.append("<SETTING,ACCEL,3," + str(self.p3_accel_to_send) + ",F,0.0,0.0,0.0>")
+		self.p3_settings.append("<SETTING,DELTA,3," + str(self.p3_setup_jog_delta_to_send) + ",F,0.0,0.0,0.0>")
 
 		worker = Worker(self.runTest, self.p3_settings)
 
@@ -913,17 +917,17 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	# Send all settings
 	def send_all(self):
 		self.settings = []
-		self.settings.append("<SETTING,SPEED,1,"+str(self.p1_speed_to_send)+",F,0.0>")
-		self.settings.append("<SETTING,ACCEL,1,"+str(self.p1_accel_to_send)+",F,0.0>")
-		self.settings.append("<SETTING,DELTA,1,"+str(self.p1_setup_jog_delta_to_send)+",F,0.0>")
+		self.settings.append("<SETTING,SPEED,1,"+str(self.p1_speed_to_send)+",F,0.0,0.0,0.0>")
+		self.settings.append("<SETTING,ACCEL,1,"+str(self.p1_accel_to_send)+",F,0.0,0.0,0.0>")
+		self.settings.append("<SETTING,DELTA,1,"+str(self.p1_setup_jog_delta_to_send)+",F,0.0,0.0,0.0>")
 
-		self.settings.append("<SETTING,SPEED,2,"+str(self.p2_speed_to_send)+",F,0.0>")
-		self.settings.append("<SETTING,ACCEL,2,"+str(self.p2_accel_to_send)+",F,0.0>")
-		self.settings.append("<SETTING,DELTA,2,"+str(self.p2_setup_jog_delta_to_send)+",F,0.0>")
+		self.settings.append("<SETTING,SPEED,2,"+str(self.p2_speed_to_send)+",F,0.0,0.0,0.0>")
+		self.settings.append("<SETTING,ACCEL,2,"+str(self.p2_accel_to_send)+",F,0.0,0.0,0.0>")
+		self.settings.append("<SETTING,DELTA,2,"+str(self.p2_setup_jog_delta_to_send)+",F,0.0,0.0,0.0>")
 
-		self.settings.append("<SETTING,SPEED,3,"+str(self.p3_speed_to_send)+",F,0.0>")
-		self.settings.append("<SETTING,ACCEL,3,"+str(self.p3_accel_to_send)+",F,0.0>")
-		self.settings.append("<SETTING,DELTA,3,"+str(self.p3_setup_jog_delta_to_send)+",F,0.0>")
+		self.settings.append("<SETTING,SPEED,3,"+str(self.p3_speed_to_send)+",F,0.0,0.0,0.0>")
+		self.settings.append("<SETTING,ACCEL,3,"+str(self.p3_accel_to_send)+",F,0.0,0.0,0.0>")
+		self.settings.append("<SETTING,DELTA,3,"+str(self.p3_setup_jog_delta_to_send)+",F,0.0,0.0,0.0>")
 
 		worker = Worker(self.runTest, self.settings)
 
@@ -1103,6 +1107,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	def sendToArduino(self, sendStr):
 		self.serial.write(sendStr.encode())
+		self.serial.flushInput()
 
 	def recvFromArduino2(self):
 		startMarker = self.startMarker
@@ -1247,3 +1252,17 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
+
+# "<SETTING,SPEED,1,80000,F,0.0,0.0,0.0>"
+# "<SETTING,ACCEL,1,79999920,F,0.0,0.0,0.0>"
+# "<SETTING,DELTA,1,80000.0,F,0.0,0.0,0.0>"
+
+# "<SETTING,SPEED,2,80000.0,F,0.0,0.0,0.0>"
+# "<SETTING,ACCEL,2,79999920.0,F,0.0,0.0,0.0>"
+# "<SETTING,DELTA,2,80000.0,F,0.0,0.0,0.0>"
+
+# "<SETTING,SPEED,3,80000.0,F,0.0,0.0,0.0>"
+# "<SETTING,ACCEL,3,79999920.0,F,0.0,0.0,0.0>"
+# "<SETTING,DELTA,3,80000.0,F,0.0,0.0,0.0>"
+
