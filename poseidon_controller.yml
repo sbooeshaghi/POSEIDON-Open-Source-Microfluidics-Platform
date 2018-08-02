@@ -12,9 +12,9 @@ dependencies:
   - gettext=0.19.8.1=h15daf44_3
   - glib=2.56.1=h35bc53a_0
   - icu=58.2=h4b95b61_1
-  - ipython=6.4.0=py36_0
+  - ipython=6.5.0=py36_0
   - ipython_genutils=0.2.0=py36h241746c_0
-  - jedi=0.12.0=py36_1
+  - jedi=0.12.1=py36_0
   - jpeg=9b=he5867d9_2
   - libcxx=4.0.1=h579ed51_0
   - libcxxabi=4.0.1=hebd6815_0
@@ -24,7 +24,7 @@ dependencies:
   - libpng=1.6.34=he12f830_0
   - ncurses=6.1=h0a44026_0
   - openssl=1.0.2o=h26aff7b_0
-  - parso=0.2.1=py36_0
+  - parso=0.3.1=py36_0
   - pcre=8.42=h378b8a2_0
   - pexpect=4.6.0=py36_0
   - pickleshare=0.7.4=py36hf512f8e_0
@@ -32,14 +32,14 @@ dependencies:
   - prompt_toolkit=1.0.15=py36haeda067_0
   - ptyprocess=0.6.0=py36_0
   - pygments=2.2.0=py36h240cd3f_0
-  - pyqt=5.9.2=py36h11d3b92_0
-  - python=3.6.5=hc167b69_1
+  - pyqt=5.9.2=py36h655552a_0
+  - python=3.6.6=hc167b69_0
   - qt=5.9.6=h74ce4d9_0
   - readline=7.0=hc1231fa_4
   - setuptools=39.2.0=py36_0
   - simplegeneric=0.8.1=py36_2
   - sip=4.19.8=py36h0a44026_0
-  - six=1.11.0=py36h0e22d5e_1
+  - six=1.11.0=py36_1
   - sqlite=3.24.0=ha441bb4_0
   - tk=8.6.7=h35a86e2_3
   - traitlets=4.3.2=py36h65bd3ce_0
