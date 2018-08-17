@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.12)  13 AUG 2018 09:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.12)  14 AUG 2018 12:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -992,88 +992,104 @@ Package: nicefrac 1998/08/04 v0.9b Nice fractions
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 ))
+(/usr/local/texlive/2016/texmf-dist/tex/latex/subfig/subfig.sty
+Package: subfig 2005/06/28 ver: 1.3 subfig package
+\c@KVtest=\count314
+\sf@farskip=\skip128
+\sf@captopadj=\dimen303
+\sf@capskip=\skip129
+\sf@nearskip=\skip130
+\c@subfigure=\count315
+\c@subfigure@save=\count316
+\c@lofdepth=\count317
+\c@subtable=\count318
+\c@subtable@save=\count319
+\c@lotdepth=\count320
+\sf@top=\skip131
+\sf@bottom=\skip132
+)
 (/usr/local/texlive/2016/texmf-dist/tex/latex/stackengine/stackengine.sty
 Package: stackengine 2017/02/13 v4.01\ Stacking text and objects in convenient 
 ways
 
 (/usr/local/texlive/2016/texmf-dist/tex/generic/listofitems/listofitems.sty
 (/usr/local/texlive/2016/texmf-dist/tex/generic/listofitems/listofitems.tex
-\loi_nestcnt=\count314
+\loi_nestcnt=\count321
 )
 Package: listofitems 2016/11/18 v1.3 Grab items in lists using user-specified s
 ep char
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count315
-\calc@Bcount=\count316
-\calc@Adimen=\dimen303
-\calc@Bdimen=\dimen304
-\calc@Askip=\skip128
-\calc@Bskip=\skip129
+\calc@Acount=\count322
+\calc@Bcount=\count323
+\calc@Adimen=\dimen304
+\calc@Bdimen=\dimen305
+\calc@Askip=\skip133
+\calc@Bskip=\skip134
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count317
-\calc@Cskip=\skip130
+\calc@Ccount=\count324
+\calc@Cskip=\skip135
 )
-\c@@stackindex=\count318
-\@boxshift=\skip131
-\stack@tmplength=\skip132
-\temp@stkl=\skip133
-\@stackedboxwidth=\skip134
+\c@@stackindex=\count325
+\@boxshift=\skip136
+\stack@tmplength=\skip137
+\temp@stkl=\skip138
+\@stackedboxwidth=\skip139
 \@addedbox=\box92
 \@anchorbox=\box93
 \stackedbox=\box94
 \@centerbox=\box95
-\c@ROWcellindex@=\count319
+\c@ROWcellindex@=\count326
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
 Package: fancyhdr 2017/06/30 v3.9a Extensive control of page headers and footer
 s
-\f@nch@headwidth=\skip135
-\f@nch@O@elh=\skip136
-\f@nch@O@erh=\skip137
-\f@nch@O@olh=\skip138
-\f@nch@O@orh=\skip139
-\f@nch@O@elf=\skip140
-\f@nch@O@erf=\skip141
-\f@nch@O@olf=\skip142
-\f@nch@O@orf=\skip143
+\f@nch@headwidth=\skip140
+\f@nch@O@elh=\skip141
+\f@nch@O@erh=\skip142
+\f@nch@O@olh=\skip143
+\f@nch@O@orh=\skip144
+\f@nch@O@elf=\skip145
+\f@nch@O@erf=\skip146
+\f@nch@O@olf=\skip147
+\f@nch@O@orf=\skip148
 )
 (./newsletter_2.aux)
 \openout1 = `newsletter_2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 44.
-LaTeX Font Info:    ... okay on input line 44.
-LaTeX Font Info:    Try loading font information for T1+bch on input line 44.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Try loading font information for T1+bch on input line 45.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/t1bch.fd
 File: t1bch.fd 2004/10/18 font definitions for T1/bch.
 )
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count320
-\scratchdimen=\dimen305
+\scratchcounter=\count327
+\scratchdimen=\dimen306
 \scratchbox=\box96
-\nofMPsegments=\count321
-\nofMParguments=\count322
+\nofMPsegments=\count328
+\nofMParguments=\count329
 \everyMPshowfont=\toks42
-\MPscratchCnt=\count323
-\MPscratchDim=\dimen306
-\MPnumerator=\count324
-\makeMPintoPDFobject=\count325
+\MPscratchCnt=\count330
+\MPscratchDim=\dimen307
+\MPnumerator=\count331
+\makeMPintoPDFobject=\count332
 \everyMPtoPDFconversion=\toks43
 ) (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
@@ -1092,7 +1108,7 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 44.
+LaTeX Info: Redefining \microtypecontext on input line 45.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1108,10 +1124,11 @@ File: mt-bch.cfg 2007/03/03 v1.5 microtype config. file: Bitstream Charter (RS)
 
 )
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box97
-Package hyperref Info: Link coloring ON on input line 44.
+Package hyperref Info: Link coloring ON on input line 45.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
@@ -1119,11 +1136,11 @@ Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
 (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
-\c@section@level=\count326
+\c@section@level=\count333
 )
-LaTeX Info: Redefining \ref on input line 44.
-LaTeX Info: Redefining \pageref on input line 44.
-LaTeX Info: Redefining \nameref on input line 44.
+LaTeX Info: Redefining \ref on input line 45.
+LaTeX Info: Redefining \pageref on input line 45.
+LaTeX Info: Redefining \nameref on input line 45.
 
 (./newsletter_2.out) (./newsletter_2.out)
 \@outlinefile=\write4
@@ -1131,7 +1148,7 @@ LaTeX Info: Redefining \nameref on input line 44.
 
 
 ABD: EveryShipout initializing macros
-Underfull \hbox (badness 1558) in paragraph at lines 66--68
+Underfull \hbox (badness 1558) in paragraph at lines 67--69
 []\T1/bch/b/n/12 Poseidon Quick Facts:
  []
 
@@ -1139,7 +1156,7 @@ Underfull \hbox (badness 1558) in paragraph at lines 66--68
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-Overfull \hbox (3.15628pt too wide) in paragraph at lines 73--90
+Overfull \hbox (6.36221pt too wide) in paragraph at lines 74--90
 [][] 
  []
 
@@ -1166,71 +1183,103 @@ Package mdframed Info: mdframed inside a box
 <img/pump-ortho.png, id=8, 969.6225pt x 524.96124pt>
 File: img/pump-ortho.png Graphic file (type png)
 <use img/pump-ortho.png>
-Package pdftex.def Info: img/pump-ortho.png  used on input line 151. on input l
-ine 151.
+Package pdftex.def Info: img/pump-ortho.png  used on input line 153. on input l
+ine 153.
 Package pdftex.def Info: Requested size: 133.55365pt x 72.30054pt on input line
- 151.
+ 153.
+
+Package wrapfig Warning: Collision between wrapping environments on input line 
+158.
+
 <img/cam-ortho.png, id=10, 745.78625pt x 649.42625pt>
 File: img/cam-ortho.png Graphic file (type png)
 <use img/cam-ortho.png>
-Package pdftex.def Info: img/cam-ortho.png  used on input line 156. on input li
-ne 156.
+Package pdftex.def Info: img/cam-ortho.png  used on input line 159. on input li
+ne 159.
 Package pdftex.def Info: Requested size: 110.18405pt x 95.94313pt on input line
- 156.
-LaTeX Font Info:    Try loading font information for OMS+bch on input line 174.
+ 159.
 
-(/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsbch.fd
-File: omsbch.fd 
-)
-LaTeX Font Info:    Font shape `OMS/bch/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 174.
-
-
-Package wrapfig Warning: wrapfigure used inside a conflicting environment on in
-put line 179.
-
-<img/gui-example.png, id=11, 1415.2875pt x 732.7375pt>
-File: img/gui-example.png Graphic file (type png)
-<use img/gui-example.png>
-Package pdftex.def Info: img/gui-example.png  used on input line 180. on input 
-line 180.
-Package pdftex.def Info: Requested size: 166.94463pt x 86.4265pt on input line 
-180.
-
-Package wrapfig Warning: Stationary wrapfigure forced to float on input line 18
+Package wrapfig Warning: Stationary wrapfigure forced to float on input line 16
 2.
 
 
-Overfull \hbox (1.87965pt too wide) in paragraph at lines 291--301
+Package wrapfig Warning: Stationary wrapfigure forced to float on input line 16
+9.
+
+
+Overfull \hbox (1.87965pt too wide) in paragraph at lines 234--244
 [][] 
  []
 
 Package mdframed Info: mdframed inside a box 
- mdframed uses option nobreak mdframed on input line 302.
+ mdframed uses option nobreak mdframed on input line 245.
+[1
+
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./img/p
+ump-ortho.png> <./img/cam-ortho.png>]
+<img/blue.png, id=41, 642.4pt x 481.8pt>
+File: img/blue.png Graphic file (type png)
+<use img/blue.png>
+Package pdftex.def Info: img/blue.png  used on input line 272. on input line 27
+2.
+Package pdftex.def Info: Requested size: 126.47249pt x 94.8512pt on input line 
+272.
+<img/yellow.png, id=42, 642.4pt x 481.8pt>
+File: img/yellow.png Graphic file (type png)
+<use img/yellow.png>
+Package pdftex.def Info: img/yellow.png  used on input line 272. on input line 
+272.
+Package pdftex.def Info: Requested size: 126.47249pt x 94.8512pt on input line 
+272.
+<img/run.png, id=43, 843.15pt x 534.99875pt>
+File: img/run.png Graphic file (type png)
+<use img/run.png>
+Package pdftex.def Info: img/run.png  used on input line 274. on input line 274
+.
+Package pdftex.def Info: Requested size: 177.06458pt x 112.34488pt on input lin
+e 274.
+<img/settings.png, id=44, 843.15pt x 534.99875pt>
+File: img/settings.png Graphic file (type png)
+<use img/settings.png>
+Package pdftex.def Info: img/settings.png  used on input line 274. on input lin
+e 274.
+Package pdftex.def Info: Requested size: 177.06458pt x 112.34488pt on input lin
+e 274.
+<img/all.png, id=45, 531.9875pt x 221.82875pt>
+File: img/all.png Graphic file (type png)
+<use img/all.png>
+Package pdftex.def Info: img/all.png  used on input line 276. on input line 276
+.
+Package pdftex.def Info: Requested size: 252.94499pt x 105.47128pt on input lin
+e 276.
+
 
 Package caption Warning: Unused \captionsetup[table] on input line 45.
 See the caption package documentation for explanation.
 
-[1
+[2pdfTeX warning (ext4): destination with the same identifier (name{thirdnews})
+ has been already used, duplicate ignored
 
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./img/p
-ump-ortho.png> <./img/cam-ortho.png> <./img/gui-example.png>] [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 320.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 320.
-
-(./newsletter_2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 320.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 320.
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.281 \end{document}
+                     <./img/blue.png (PNG copy)> <./img/yellow.png (PNG copy)> 
+<./img/run.png> <./img/settings.png> <./img/all.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 281.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 281.
+ (./newsletter_2.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 281.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 281.
 Package rerunfilecheck Info: File `newsletter_2.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 320.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 281.
  ) 
 Here is how much of TeX's memory you used:
- 29117 strings out of 492990
- 557306 string characters out of 6132636
- 660776 words of memory out of 5000000
- 32176 multiletter control sequences out of 15000+600000
- 578590 words of font info for 105 fonts, out of 8000000 for 9000
+ 29266 strings out of 492990
+ 559588 string characters out of 6132636
+ 661832 words of memory out of 5000000
+ 32317 multiletter control sequences out of 15000+600000
+ 575180 words of font info for 104 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  69i,14n,73p,10548b,983s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
@@ -1238,16 +1287,14 @@ exlive/2016/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></usr/local/texl
 ive/2016/texmf-dist/fonts/type1/bitstrea/charter/bchbi8a.pfb></usr/local/texliv
 e/2016/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/local/texlive/2
 016/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/local/texlive/2016
-/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></usr/local/texlive/2016/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2016/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2016/texmf-dis
-t/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on newsletter_2.pdf (2 pages, 1109404 bytes).
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2016/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2016/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2016/texmf-
+dist/fonts/type1/urw/courier/ucrr8a.pfb>
+Output written on newsletter_2.pdf (2 pages, 2288623 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
- 68 compressed objects within 1 object stream
- 17 named destinations out of 1000 (max. 500000)
- 28188 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 91 PDF objects out of 1000 (max. 8388607)
+ 66 compressed objects within 1 object stream
+ 20 named destinations out of 1000 (max. 500000)
+ 23600 words of extra memory for PDF output out of 24883 (max. 10000000)
 

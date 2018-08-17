@@ -24,7 +24,8 @@
 \usepackage{amsmath}
 \usepackage{nicefrac}
 \usepackage{booktabs}
-
+\usepackage{graphicx}
+\usepackage{subfig}
 \usepackage[usestackEOL]{stackengine}
 %\usepackage{libertine}
 \usepackage{fancyhdr}
@@ -72,19 +73,18 @@
 			\renewcommand{\arraystretch}{1.5} % Default value: 1
 			\begin{tabular}{@{}rl@{}}
 				\textbf{\emph{Operation:}} & infuse \& withdraw \\
-				\textbf{\emph{Total Cost:}} &\$500\\
-				\textbf{\emph{Print time:}} & 20hr\\
-				\textbf{\emph{Build time: }} & 20min\\
+				\textbf{\emph{Total Cost:}} &$<$\$400\\
+				\textbf{\emph{Print time:}} & 23hr\\
+				\textbf{\emph{Build time: }} & 30min\\
 				\textbf{\emph{Syringe:}} & BD Plastic 1-60mL\\
 				\textbf{\emph{Dist Units:}} & mm, mL, $\mu$L\\
 				\textbf{\emph{Time units:}} & sec, min, hr\\
-				\textbf{\emph{Pos. Tol:}} & $\pm$ 0.01 mm\\
+				\textbf{\emph{Pos. Tol:}} & $\pm$ 2\%\\
 				\textbf{\emph{Pos. Range:}} & 0-150mm\\
-				\textbf{\emph{Speed Tol:}} & $\pm$ 0.01 mm/sec\\
-				\textbf{\emph{Speed Range:}} & 0-$\infty$ mm/sec\\
-				\textbf{\emph{Max Rate:}} & 0 mL/sec\\
-				\textbf{\emph{Min Rate:}} & 0 mL/sec\\
-				\textbf{\emph{Microscope:}} & 8x\\
+				\textbf{\emph{Speed Range:}} & 60 $\mu$m-60 mm/min\\
+				\textbf{\emph{Max Rate:}} & 33.24 mL/min\\
+				\textbf{\emph{Min Rate:}} & 1.03 $\mu$L/min\\
+				\textbf{\emph{Microscope:}} & excellent\\
 			\end{tabular}
 		\endgroup
 			
@@ -140,48 +140,47 @@
 	%
 	\begin{minipage}[t]{.66\linewidth} % Mini page taking up 66% of the actual page
 		
-		\hypertarget{firstnews}{\heading{On the development of the Poseidon System}{6pt}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
-		\lettrine[lraise=0.1, nindent=0em, slope=-.5em]{T}{he} Poseidon system was developed as a highly modifiable and cheap alternative to currently available syringe pump and microscope systems. At 10x cheaper than current systems, and built using the \textit{Principles of Open Hardware Design}, Poseidon allows users to simply setup, modify, and run microfluidics experiments.
+		\hypertarget{firstnews}{\heading{An overview of the Poseidon System}{6pt}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
+		\lettrine[lraise=0.1, nindent=0em, slope=-.5em]{T}{he} Poseidon pumps and microscope are a customizable open source alternative to commercial systems that costs less than \$400 and can be assembled in under an hour. It uses 3D printed parts and common components that can be easily purchased from Amazon or other retailers. The microscope and pumps can be used together in microfluidics experiments, but the pumps can also be connected to a computer and used independently for other experiments.
 		
-		\begin{center}
-			\parbox[t]{.70\linewidth}{\emph{Principles of Open Hardware Design include: principle one, principle two, etc}}
-		\end{center}
+
+		
+%		\begin{center}
+%			\parbox[t]{.70\linewidth}{\emph{Principles of Open Hardware Design include: Modular, Hackable, Standalone/PC Interface, Minimize Dependencies, Simple \& Robust, Easy to Build, Affordable, Benchmarked}}
+%		\end{center}
 		
 		\begin{wrapfigure}[9]{r}[0pt]{0pt} % In-line figure with text wrapping around it
 			\includegraphics[width=0.4\textwidth]{img/pump-ortho.png}
 		\end{wrapfigure}
-		The Poseidon system includes a syringe pump and a microscope. These are two important components in any microfluidic experiment. Current pumping and vision systems include Harvard Apparatus, \textbf{insert other here}, Nikon desktop optical microscope, and \textbf{insert other here}. While these devices are used widly and have many unique features, they are expensive and many lack the ability to modify the operation of the device. 
+		The pumps are driven by an Arduino with a CNC shield and up to three pumps can be run at once. Each pump has a stepper motor that drives a lead screw which in turn moves a sled that is mounted on linear bearings. The displacement of the sled moves the syringe forward or backward allowing the user to dispel or intake liquid.
+
 
 		\begin{wrapfigure}[9]{l}[0pt]{0pt} % In-line figure with text wrapping around it
 			\includegraphics[width=0.33\textwidth]{img/cam-ortho.png}
 		\end{wrapfigure}
 		
-		The Poseidon system was developed using entirely 3-D printed parts and components that are all easily sourced from Amazon. The syringe pump uses an arduino, compatible motor drivers, and Nema 17 stepper motor to drive a 0.8mm/step lead screw which in turn moves a sled that is mounted on linear bearings. The displacement of the sled moves the syringe forward or backward allowing the user to dispel or intake liquid. 
-		
-		The microscope was built using a raspberry
-		 pi computer and USB microscope. The raspberry pi acts as a computer that controls the syringe pumps by sending move commands via the arduino microcontroller. 
+The controller station uses a Raspberry Pi with a touchscreen to connect to the Arduino and microscope via USB. Because the microscope and Arduino use USB connections, the they can alternatively be connected to any computer instead.  
 		
 
 	
 		
 		%-----------------------------------------------------------
 		
-		\hypertarget{secondnews}{\heading{On the hackability of the Poseidon System}{6pt}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
+		\hypertarget{secondnews}{\heading{On the development of the Poseidon System}{6pt}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
 		
-		Every user made component of the Poseidon system is hackable and modifiable. These include
+		The Poseidon system was designed to be customizable. It uses the Raspberry Pi and Arduino electronics boards, which are supported by a strong ecosystem of open source hardware and software, facilitating the implementation of new functionalities. The following components developed for the Poseidon system are made available:
+		\begin{enumerate}
+			\item Computer Aided Design (CAD) files of the 3D printed components
+			\item Pump controller software and Graphical User Interface (GUI) to control the Arduino
+			 \item Arduino firmware used to drive the motors
+		\end{enumerate}
+
 		
-		\begin{itemize}
-			\item CAD (computer aided design) file of the 3-D printed components
-			\item GUI (graphical user interface) and its layout
-			\item Arduino sketch that runs the motors
-			\item Controller code that connects commands from the GUI to the arduino
-		\end{itemize}
-		\begin{wrapfigure}{r}[0pt]{0pt} % In-line figure with text wrapping around it
-			\includegraphics[width=0.5\textwidth]{img/gui-example.png}
-		\end{wrapfigure}
-		The 3-D printed components were designed using Fusion 360, a CAD software available free to students. To modify any 3-D printed part the user downloads Fusion 360, loads the files, and implements changes. These files can then be 3-D printed using available slicing software and printer. 
+		The 3D printed components can be fabricated on any desktop fused filament fabrication (FFF) 3D printer. They were designed using Autodesk Fusion 360, a proprietary CAD software that offers free academic licenses. To modify the 3D models the user can either use Fusion 360 or any other CAD software.
 		
-		The GUI was created using Qt designer, a drag and drop application for organizing buttons. The user can load the uiFileName.ui file and modify any buttons and inputs she desires. This new GUI can then be converted to a python file using \texttt{pyuic5 uiFileName.ui > uiFileName.py}.
+		The GUI was created using Qt designer, a drag and drop application for organizing buttons that allows the used to easily make modifications. This GUI is used to interface with a Python script that controls both the microscope and Arduino via USB. 
+		
+		The pumps are driven by an Arduino board that interprets commands sent via USB and sends the proper signal to control the stepper motor movement. The user can take advantage of this by developing custom movement patterns using built-in Arduino functions.
 		
 	\end{minipage} % End the main body - first page mini page
 	
@@ -190,85 +189,29 @@
 	%----------------------------------------------------------------------------------------
 	
 	\begin{minipage}[t]{.66\linewidth} % Mini page taking up 66% of the actual page
-		With the new ui python file, the user can configure which commands are sent to the controller when different elements of the GUI are activated (via a button press or checkbox toggle etc). These commands are sent to, and interpreted by the custom Arduino sketch.
-		
-
-
-		\begin{center}
-	
-			\begin{tabular}{@{}rl@{}}
-				\multicolumn{2}{c}{ \texttt{<mode,setting,motor,value,dir,opt1,opt2,opt3>}} \\
-				\toprule
-				\cmidrule(r){1-2}
-				Variable & Argument (sent as a string)\\
-				\midrule
-				mode & ["RUN", "SETTING", "JOG", "STOP"]\\
-				setting & ["ALL"", "FEW", "ONE", "ACCEL", "SPEED", "DELTA"]\\
-				motorID & [1, 2, 3, 12, 23, 13, 123] \\
-				value & any positive floating number\\
-				direction & ['F', 'B']\\
-				opt1 & any floating number\\
-				opt2 & any floating number\\
-				opt3 & any floating number\\
-				\bottomrule
-			\end{tabular}
-		\end{center}
-
-		
-		The Arduino interprets the custom commands that are sent by python, through the serial port (USB port), and executes the associated function on the board which in turn results in stepper motor movement. Certain commands require value inputs, such as distance to move, and in this case the Arduino is capable of grabbing those values from the python command and executing a local function with that value. The user can take advantage of this protocol by developing custom movement patterns using the Arduino functions. 
-		
-		
-		
-		
 		
 		\hypertarget{thirdnews}{\heading{On the licensing of the Poseidon System}{6pt}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
 		
 		\begin{multicols}{2} % Two-column layout
-			This is still TBD but Eduardo is adamant about a certain license.
+			This is still TBD.
 		\end{multicols}
 		
-		
-		%----------------------------------------------------------------------------------------
-		%	IN-TEXT BOX
-		%----------------------------------------------------------------------------------------
-		
-%		\begin{mdframed}[style=intextbox,frametitle={}] % Sidebar box
-%			
-%			\hypertarget{descriptivebox}{\heading{Descriptive Box}{0pt}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
-%			
-%			Nam in turpis scelerisque libero luctus tincidunt sed faucibus lorem ac nisi rhoncus hendrerit. Praesent semper dui non justo rhoncus consequat. Mauris egestas tempus ligula:
-%			\begin{enumerate}
-%				\item Quisque mi metu.      
-%				\item Sem iaculis molestie vulputate.
-%				\item Suscipit accumsan dui metus sed.
-%				\item Molestie sed ullamcorper quis, venenatis nec lorem.
-%				\item Nec pulvinar \textsl{Rutrum Cursus / Ante\dots} command.      
-%				\item Donec sit amet sem ligula,  \textsl{non} posuere neque. 
-%				\item In hac habitasse nibh ultricies pellentesque elit risus sollicitudin velit.
-%				\item Aliquam nec metus sed.
-%			\end{enumerate}
-%			
-%			\BackToContents % Link back to the contents of the newsletter
-%			
-%		\end{mdframed}
-		
-		%----------------------------------------------------------------------------------------
-		%	QUOTATION
-		%----------------------------------------------------------------------------------------
 		\centerline {\rule{.75\linewidth}{.25pt}} % Horizontal line	
 		\hypertarget{quotation}{{\textbf{\large User Quotes}}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
+		
+		\begin{quote}
+			\raggedright \textsl{Finally a reliable, inexpensive, and hackable system that I can use for my Drop Seq experiments.} \\ \raggedleft--- \textrm{J. Gehring (Post Doc)}
+		\end{quote}
 		
 		\begin{quote}
 			\raggedright \textsl{I loved how easy the system was to setup!} \\ \raggedleft--- \textrm{L. Pachter (P.I.)}
 		\end{quote}
 	
 		\begin{quote}
-			\raggedright \textsl{Screw big corporations! I want to start my own big corporation using these pumps for profit. MWUAHAHA} \\ \raggedleft--- \textrm{E. D. V. Beltrame (Graduate Student)}
+			\raggedright \textsl{The system comes really close to beating out the Harvard Pumps, I can't wait to work on these pumps and contribute to the open source community.} \\ \raggedleft--- \textrm{E. D. V. Beltrame (Graduate Student)}
 		\end{quote}
 	
-		\begin{quote}
-			\raggedright \textsl{Finally a reliable, inexpensive, and hackable system that I can use for my Drop Seq experiments.} \\ \raggedleft--- \textrm{J. Gehring (Post Doc)}
-		\end{quote}
+
 		
 		%----------------------------------------------------------------------------------------
 		
@@ -303,11 +246,12 @@
 		
 		%----------------------------------------------------------------------------------------
 		
-		\centering
+
 		\begin{minipage}[t]{.95\linewidth}
-			\textbf{Contact Us:}\\
+			\raggedright\textbf{Contact Us:}\\
+			Sina Booeshaghi\\
 			Pachter Lab, California Institute of Technology Pasadena, CA.\\
-			\href{email}{pachterlab@caltech.edu}\\
+			\href{email}{abooeshab@caltech.edu}\\
 			\href{labpage}{pachterlab.github.io/poseidon}
 		\end{minipage}
 		
@@ -316,5 +260,22 @@
 	\end{minipage} % End of the sidebar mini page
 	
 	%----------------------------------------------------------------------------------------
+	\begin{minipage}[t]{1\linewidth} % Mini page taking up 66% of the actual page
 	
+	\hypertarget{thirdnews}{\heading{Appendix A: Images of the Poseidon system}{6pt}} % \hypertarget provides a label to reference using \hyperlink{label}{link text}
+			\centerline {\rule{.75\linewidth}{.25pt}} % Horizontal line			
+\end{minipage}\hfill % End of the main body - second page mini page
+\begin{center}
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{cc}
+		\includegraphics[width=.25\linewidth]{img/blue.png} &   \includegraphics[width=.25\linewidth]{img/yellow.png} \\
+		(a) USB Microscope w/ LED & (b) USB Microscope w/o LED \\[6pt]
+		\includegraphics[width=.35\linewidth]{img/run.png} &   \includegraphics[width=.35\linewidth]{img/settings.png} \\
+		(c) GUI run page & (d) GUI settings page \\[6pt]
+		\multicolumn{2}{c}{\includegraphics[width=.5\linewidth]{img/all.png} }\\
+		\multicolumn{2}{c}{(e) The whole system}
+	\end{tabular}
+\end{figure}
+\end{center}
 \end{document} 

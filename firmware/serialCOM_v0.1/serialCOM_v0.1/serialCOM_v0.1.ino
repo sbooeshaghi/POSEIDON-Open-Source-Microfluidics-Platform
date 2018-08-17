@@ -269,11 +269,8 @@ void executeThisFunction() {
 
   else if (strcmp(mode, "RUN") == 0) {
     // Check if any stepper is currently running and do not allow execution if that is the case
-    if (motorID == 1 || motorID == 2 || motorID == 3){
-      runOne();
-    }
-    else {
-      runMany();
+    if (strcmp(setting, "DIST") == 0){
+      runFew();
     }
   }
 
@@ -537,8 +534,119 @@ void runOne() {
 //===================================
 // This function will run few ie if (p1, p2) or (p1, p3) or (p2, p3) are enabled
 
-void runMany(){
+void runFew(){
   switch (motorID) {
+    case 1:
+        if (strcmp(setting, "DIST") == 0){
+          if (strcmp(dir, "F") == 0){
+            toMove = p1_optional;
+            stepper1.move(toMove);
+            while (stepper1.distanceToGo() > 0) {
+              stepper1.runSpeedToPosition();
+              getDataFromPC();
+            }
+          }
+          else if (strcmp(dir, "B") == 0) {
+            toMove = -p1_optional;
+            stepper1.move(toMove);
+            while (stepper1.distanceToGo() < 0) {
+              stepper1.runSpeedToPosition();
+              getDataFromPC();
+            }
+          } 
+        }
+        else if (strcmp(setting, "RUN") == 0){
+          if (strcmp(dir, "F") == 0){
+            toMove = 999999;
+            stepper1.move(toMove);
+            while (stepper1.distanceToGo() >= 0) {
+              stepper1.runSpeedToPosition();
+            }
+          }
+          else if (strcmp(dir, "B") == 0) {
+            toMove = -999999;
+            stepper1.move(toMove);
+            while (stepper1.distanceToGo() <= 0) {
+              stepper1.runSpeedToPosition();
+            }
+          }
+        }
+        break;
+      case 2:
+        // run pump 2. literally copy-paste case 1 here. for readability will do this at the end
+        if (strcmp(setting, "DIST") == 0){
+          if (strcmp(dir, "F") == 0){
+            toMove = p2_optional;
+            stepper2.move(toMove);
+            while (stepper2.distanceToGo() > 0) {
+              stepper2.runSpeedToPosition();
+              getDataFromPC();
+            }
+          }
+          else if (strcmp(dir, "B") == 0) {
+            toMove = -p2_optional;
+            stepper2.move(toMove);
+            while (stepper2.distanceToGo() < 0) {
+              stepper2.runSpeedToPosition();
+              getDataFromPC();
+            }
+          } 
+        }
+        else if (strcmp(setting, "RUN") == 0){
+          if (strcmp(dir, "F") == 0){
+            toMove = 999999;
+            stepper2.move(toMove);
+            while (stepper2.distanceToGo() >= 0) {
+              stepper2.runSpeedToPosition();
+            }
+          }
+          else if (strcmp(dir, "B") == 0) {
+            toMove = -999999;
+            stepper2.move(toMove);
+            while (stepper2.distanceToGo() <= 0) {
+              stepper2.runSpeedToPosition();
+            }
+          }
+        }
+      break;
+
+      case 3:
+        // run pump 3. literally copy-paste case 1 here. for readability will do this at the end
+        if (strcmp(setting, "DIST") == 0){
+          if (strcmp(dir, "F") == 0){
+            toMove = p3_optional;
+            stepper3.move(toMove);
+            while (stepper3.distanceToGo() > 0) {
+              stepper3.runSpeedToPosition();
+              getDataFromPC();
+            }
+          }
+          else if (strcmp(dir, "B") == 0) {
+            toMove = -p3_optional;
+            stepper3.move(toMove);
+            while (stepper3.distanceToGo() < 0) {
+              stepper3.runSpeedToPosition();
+              getDataFromPC();
+            }
+          } 
+        }
+        else if (strcmp(setting, "RUN") == 0){
+          if (strcmp(dir, "F") == 0){
+            toMove = 999999;
+            stepper3.move(toMove);
+            while (stepper3.distanceToGo() >= 0) {
+              stepper3.runSpeedToPosition();
+            }
+          }
+          else if (strcmp(dir, "B") == 0) {
+            toMove = -999999;
+            stepper3.move(toMove);
+            while (stepper3.distanceToGo() <= 0) {
+              stepper3.runSpeedToPosition();
+            }
+          }
+        }
+      break;
         case 12:
           if (strcmp(setting, "DIST") == 0){
             if (strcmp(dir, "F") == 0){
@@ -748,45 +856,7 @@ void runMany(){
 }
 //===================================
 void runAll(){
-  if (strcmp(setting, "DIST") == 0){
-    if (strcmp(dir, "F") == 0){
-      toMove = value;
-      stepper1.move(toMove);
-      stepper2.move(toMove);
-      stepper3.move(toMove);
-      while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
-        stepper1.runSpeedToPosition();
-        stepper2.runSpeedToPosition();
-        stepper3.runSpeedToPosition();
-        getDataFromPC();
-      }
-    }
-    else if (strcmp(dir, "B") == 0) {
-      toMove = -value;
-      stepper1.move(toMove);
-      stepper2.move(toMove);
-      stepper3.move(toMove);
-      while (stepper1.distanceToGo() <= 0 && stepper2.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
-        stepper1.runSpeedToPosition();
-        stepper2.runSpeedToPosition();
-        stepper3.runSpeedToPosition();
-        getDataFromPC();
-      }
-    } 
-  }
-  else if (strcmp(setting, "RUN") == 0){
-    if (strcmp(dir, "F") == 0){
-      toMove = 999999;
-      stepper1.move(toMove);
-      stepper2.move(toMove);
-      stepper3.move(toMove);
-      while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
-        stepper1.runSpeedToPosition();
-        stepper2.runSpeedToPosition();
-        stepper3.runSpeedToPosition();
-      }
-    }
-  }
+
 }
 
 
@@ -802,7 +872,7 @@ void jogOne() {
 }
 
 void jogFew(){
-  runMany();
+  runFew();
 }
 
 void jogAll() {
@@ -861,6 +931,7 @@ void resumeRun() {
   stepper1.move(p1_target_position);
   while (stepper1.distanceToGo() >= 0) {
     stepper1.runSpeedToPosition();
+    getDataFromPC();
   }
   stepper1.setCurrentPosition(0);
 }
