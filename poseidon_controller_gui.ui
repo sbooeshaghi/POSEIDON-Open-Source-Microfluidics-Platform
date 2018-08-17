@@ -813,13 +813,6 @@
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QPushButton" name="demo_BTN">
-            <property name="text">
-             <string>Demo BTN</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item>
