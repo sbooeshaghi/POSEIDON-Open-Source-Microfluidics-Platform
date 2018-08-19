@@ -16,7 +16,7 @@ import numpy as np
 from decimal import Decimal
 # This is our window from QtCreator
 import poseidon_controller_gui
-
+import pdb
 import traceback, sys
 
 # ##############################
@@ -138,6 +138,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui = poseidon_controller_gui.Ui_MainWindow()
 		self.ui.setupUi(self)
 
+
+
+
 		self.populate_syringe_sizes()
 		self.populate_pump_jog_delta()
 		self.populate_pump_units()
@@ -165,6 +168,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		# Random other things I need
 		self.image = None
+
+
+		
 		
 
 	def recurring_timer(self):
@@ -192,6 +198,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	def thread_finished(self, th):
 		th.stop()
 		print("YO THREAD IS DONE MAYNE!")
+		print("=============================\n\n")
 		# here is where you need to end the thread
 
 
@@ -959,7 +966,12 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				self.serial.bytesize = serial.EIGHTBITS
 				self.serial.timeout = 1
 				self.serial.open()
-				self.wait_for_arduino()
+
+				self.global_listener_thread = Thread(self.listening)
+				self.global_listener_thread.finished.connect(lambda:self.self.thread_finished(self.global_listener_thread))
+				self.global_listener_thread.start()
+
+				#self.wait_for_arduino()
 				self.statusBar().showMessage("Successfully connected to board.")
 
 				# ~~~~~~~~~~~~~~~~
@@ -1095,7 +1107,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	def perhour2persec(self, value_per_hour):
 		value_per_sec = value_per_hour/60.0/60.0
-		print("VALUE PER HOUR: " + str(value_per_hour))
+		return value_per_sec
 
 	def convert_displacement(self, displacement, units, syringe_area):
 		length = units.split("/")[0]
@@ -1110,22 +1122,23 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			displacement = self.uL2steps(displacement, syringe_area)
 
 		print('________________________________________________________')
-		print("INPUT DISPLACEMENT: " + str(inp_displacement) + ' ' + length)
-		print("STEPS DISPLACEMENT: " + str(displacement) + ' steps')
+		print("INP DISP: " + str(inp_displacement) + ' ' + length)
+		print("OUT DISP: " + str(displacement) + ' steps')
 		return displacement
 
-	def convert_speed(self, speed, units, syringe_area):
+	def convert_speed(self, inp_speed, units, syringe_area):
 		length = units.split("/")[0]
 		time = units.split("/")[1]
-		inp_speed = speed
+
 
 		# convert length first
 		if length == "mm":
-			speed = self.mm2steps(speed)
+			speed = self.mm2steps(inp_speed)
 		elif length == "mL":
-			speed = self.mL2steps(speed, syringe_area)
+			speed = self.mL2steps(inp_speed, syringe_area)
 		elif length == "µL":
-			speed = self.uL2steps(speed, syringe_area)
+			speed = self.uL2steps(inp_speed, syringe_area)
+
 
 		# convert time next
 		if time == "s":
@@ -1136,8 +1149,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			speed = self.perhour2persec(speed)
 
 		print('========================================================')
-		print("INPUT SPEED: " + str(inp_speed) + ' ' + units)
-		print("STEPS SPEED: " + str(speed) + ' steps/s')
+
+		print("INP SPEED: " + str(inp_speed) + ' ' + units)
+		print("OUT SPEED: " + str(speed) + ' steps/s')
 		return speed
 
 	def convert_accel(self, accel, units, syringe_area):
@@ -1151,7 +1165,6 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			accel = self.mm2steps(accel)
 		elif length == "mL":
 			accel = self.mL2steps(accel, syringe_area)
-			print("CONVERT ACCEL: " + str(accel))
 		elif length == "µL":
 			accel = self.uL2steps(accel, syringe_area)
 
@@ -1164,8 +1177,8 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			accel = self.perhour2persec(self.perhour2persec(accel))
 
 		print('________________________________________________________')
-		print("INPUT ACCEL: " + str(inp_accel) + ' ' + units + '/' + time)
-		print("STEPS ACCEL: " + str(accel) + ' steps/s/s')
+		print("INP ACCEL: " + str(inp_accel) + ' ' + units + '/' + time)
+		print("OUT ACCEL: " + str(accel) + ' steps/s/s')
 		return accel
 
 
@@ -1198,38 +1211,6 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.serial.write(sendStr.encode())
 		self.serial.flushInput()
 
-	def recvFromArduino2(self):
-		startMarker = self.startMarker
-		midMarker = self.midMarker
-		endMarker = self.endMarker
-		i = 0
-		ck = ""
-		x = "z" # any value that is not an end- or startMarker
-		byteCount = -1 # to allow for the fact that the last increment will be one too many
-	  
-		# wait for the start character
-		while  ord(x) != startMarker: 
-			x = self.serial.read()
-
-		  
-		# save data until the end marker is found
-		while ord(x) != endMarker:
-			if ord(x) == midMarker:
-				i += 1
-				print(ck)
-				if i % 100 == 0:
-					self.ui.p1_absolute_DISP.display(ck)
-				ck = ""
-				x = self.serial.read()
-
-			if ord(x) != startMarker:
-		    #print(x)
-				ck = ck + x.decode()
-				byteCount += 1
-
-			x = self.serial.read()
-
-		return(ck)
 
 	def recvPositionArduino(self):
 		startMarker = self.startMarker
@@ -1263,18 +1244,6 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	#============================
 
-	def wait_for_arduino(self):
-	   # wait until the Arduino sends 'Arduino Ready' - allows time for Arduino reset
-	   # it also ensures that any bytes left over from a previous message are discarded
-		startMarker = self.startMarker
-		midMarker = self.midMarker
-		endMarker = self.endMarker
-		msg = ""
-		while msg.find("Arduino is ready") == -1:
-			while self.serial.inWaiting() == 0:
-				pass
-			msg = self.recvFromArduino2()
-			print(msg + "\n")
 
 	def runTest(self,td):
 		numLoops = len(td)
@@ -1286,7 +1255,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 			if waitingForReply == False:
 				self.sendToArduino(teststr)
-				print("Sent from PC -- LOOP NUM " + str(n) + " STR " + teststr)
+				print("Sent from PC :LOOP NUM " + str(n) + " STR " + teststr)
 				waitingForReply = True
 
 			if waitingForReply == True:
@@ -1294,12 +1263,12 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				while self.serial.inWaiting() == 0:
 					pass
 
-				dataRecvd = self.recvFromArduino2()
-				print("Reply Received -- " + dataRecvd)
+				#dataRecvd = self.recvFromArduino2()
+				print("Reply Received : ")
 				n += 1
 				waitingForReply = False
 
-				print("=============================\n\n")
+				#print("=============================\n\n")
 
 			time.sleep(0.1)
 		print("Send and receive complete\n\n")
@@ -1313,18 +1282,71 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		if waiting_for_reply == True:
 			while self.serial.inWaiting() == 0:
 				pass
-			data_received = self.recvFromArduino2()
+			#data_received = self.recvFromArduino2()
+			data_received = "from other func"
 			print("Reply Received -- " + data_received)
 			waiting_for_reply = False
 			print("=============================\n\n")
 			print("Sent a single command")
 
 
+	def listening(self):
+		startMarker = self.startMarker
+		midMarker = self.midMarker
+		endMarker = self.endMarker
+		posMarker = ord('?')
+		i = 0
+
+		while (True):
+			self.serial.flushInput()
+			x = "z"
+			ck = ""
+			while self.serial.inWaiting() == 0:
+				pass
+			while  ord(x) != startMarker: 
+				x = self.serial.read()
+				#if ord(x) == posMarker:
+				#	return self.get_position()
+			while ord(x) != endMarker:
+				if ord(x) == midMarker:
+					i += 1
+					print(ck)
+					#if i % 100 == 0:
+					#	self.ui.p1_absolute_DISP.display(ck)
+					ck = ""
+					x = self.serial.read()
+
+				if ord(x) != startMarker:
+					ck = ck + x.decode()
+
+				x = self.serial.read()
+			print(ck)
+			self.serial.flushInput()
+			#print(self.serial.read(self.serial.inWaiting()).decode('ascii'))
+			print("\n\n")
+
+	def get_position(self):
+		ck = ""
+		x = self.serial.read()
+
+		while ord(x) != self.endMarker:
+			if ord(x) == self.midMarker:
+				print(ck)
+				ck = ""
+				x = self.serial.read()
+			ck = ck + x.decode()
+			x = self.serial.read()
+		print(ck)
+		return (ck)
+
+
 
 	def closeEvent(self, event):
 		try:
+			self.global_listener_thread.stop()
 			self.serial.close()
-			self.threadpool.end()
+			#self.threadpool.end()
+			
 		except AttributeError:
 			pass
 		sys.exit()
@@ -1355,3 +1377,34 @@ if __name__ == "__main__":
 # "<SETTING,ACCEL,3,79999920.0,F,0.0,0.0,0.0>"
 # "<SETTING,DELTA,3,80000.0,F,0.0,0.0,0.0>"
 
+# ## Works
+# 	def listening(self):
+# 		startMarker = self.startMarker
+# 		midMarker = self.midMarker
+# 		endMarker = self.endMarker
+# 		x = "z"
+# 		ck = ""
+# 		i = 0
+# 		while (True):
+# 			while self.serial.inWaiting() == 0:
+# 				pass
+# 			while  ord(x) != startMarker: 
+# 				#print("THIS IS X : " + x)
+# 				x = self.serial.read()
+# 			while ord(x) != endMarker:
+# 				if ord(x) == midMarker:
+# 					i += 1
+# 					print(ck)
+# 					if i % 100 == 0:
+# 						self.ui.p1_absolute_DISP.display(ck)
+# 					ck = ""
+# 					x = self.serial.read()
+
+# 				if ord(x) != startMarker:
+# 			    #print(x)
+# 					ck = ck + x.decode()
+# 					#byteCount += 1
+
+# 				x = self.serial.read()
+# 			print(self.serial.read(self.serial.inWaiting()).decode('ascii'))
+# 			print("\n\n=============================\n\n")

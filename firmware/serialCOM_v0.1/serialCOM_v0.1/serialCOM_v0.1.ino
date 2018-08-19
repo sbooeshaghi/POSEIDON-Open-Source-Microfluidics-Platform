@@ -253,6 +253,7 @@ void parseData() {
   p3_optional = atof(strtokIndx);            // convert to float and copy to value
 
 // Now is when we determine which mode we are in which dictates which function to call
+//replyToPC();
 executeThisFunction();
   
 }
@@ -341,15 +342,21 @@ void sendDistanceToPC(int mID) {
   switch (mID) {
   case 1:
     if (stepper1.distanceToGo() != oldDistanceLeft) {
+
     Serial.print("P1 distance left: ");
     Serial.print(stepper1.distanceToGo());
+
     oldDistanceLeft = stepper1.distanceToGo();
     }
     break;
   case 2:
     if (stepper2.distanceToGo() != oldDistanceLeft) {
+    Serial.print('?');
+    Serial.print("\n");
     Serial.print("P2 distance left: ");
     Serial.print(stepper2.distanceToGo());
+    Serial.print('|');
+    Serial.print("\n");
     oldDistanceLeft = stepper2.distanceToGo();
   }
   break;
@@ -479,6 +486,7 @@ void runOne() {
             stepper2.move(toMove);
             while (stepper2.distanceToGo() >= 0) {
               stepper2.runSpeedToPosition();
+              getDataFromPC();
             }
           }
           else if (strcmp(dir, "B") == 0) {
@@ -486,6 +494,7 @@ void runOne() {
             stepper2.move(toMove);
             while (stepper2.distanceToGo() <= 0) {
               stepper2.runSpeedToPosition();
+              getDataFromPC();
             }
           }
         }
@@ -517,6 +526,7 @@ void runOne() {
             stepper3.move(toMove);
             while (stepper3.distanceToGo() >= 0) {
               stepper3.runSpeedToPosition();
+              getDataFromPC();
             }
           }
           else if (strcmp(dir, "B") == 0) {
@@ -524,6 +534,7 @@ void runOne() {
             stepper3.move(toMove);
             while (stepper3.distanceToGo() <= 0) {
               stepper3.runSpeedToPosition();
+              getDataFromPC();
             }
           }
         }
@@ -581,7 +592,9 @@ void runFew(){
             while (stepper2.distanceToGo() > 0) {
               stepper2.runSpeedToPosition();
               getDataFromPC();
+              sendDistanceToPC(2);
             }
+            Serial.print(">");
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -p2_optional;
@@ -605,6 +618,7 @@ void runFew(){
             stepper2.move(toMove);
             while (stepper2.distanceToGo() <= 0) {
               stepper2.runSpeedToPosition();
+              getDataFromPC();
             }
           }
         }
@@ -636,6 +650,7 @@ void runFew(){
             stepper3.move(toMove);
             while (stepper3.distanceToGo() >= 0) {
               stepper3.runSpeedToPosition();
+              getDataFromPC();
             }
           }
           else if (strcmp(dir, "B") == 0) {
@@ -643,6 +658,7 @@ void runFew(){
             stepper3.move(toMove);
             while (stepper3.distanceToGo() <= 0) {
               stepper3.runSpeedToPosition();
+              getDataFromPC();
             }
           }
         }
@@ -682,6 +698,7 @@ void runFew(){
               while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
+                getDataFromPC();
               }
             }
             else if (strcmp(dir, "B") == 0) {
@@ -691,6 +708,7 @@ void runFew(){
               while (stepper1.distanceToGo() <= 0 && stepper2.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
+                getDataFromPC();
               }
             }
           }
@@ -731,6 +749,7 @@ void runFew(){
               while (stepper1.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
+                getDataFromPC();
               }
             }
             else if (strcmp(dir, "B") == 0) {
@@ -740,6 +759,7 @@ void runFew(){
               while (stepper1.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
+                getDataFromPC();
               }
             }
           }
@@ -780,6 +800,7 @@ void runFew(){
               while (stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
+                getDataFromPC();
               }
             }
             else if (strcmp(dir, "B") == 0) {
@@ -789,6 +810,7 @@ void runFew(){
               while (stepper2.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
+                getDataFromPC();
               }
             }
           }
@@ -836,6 +858,7 @@ void runFew(){
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
+                getDataFromPC();
               }
             }
             else if (strcmp(dir, "B") == 0) {
@@ -847,6 +870,7 @@ void runFew(){
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
+                getDataFromPC();
               }
             }
           }
