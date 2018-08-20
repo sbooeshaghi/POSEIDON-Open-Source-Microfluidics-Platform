@@ -8,9 +8,8 @@ import sys
 from datetime import datetime
 import time
 # This gets the Qt stuff
-from PyQt5 import QtCore, QtGui
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QTimer, QRunnable, pyqtSlot, QThreadPool, QObject, pyqtSignal, QThread
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QApplication
 import cv2
 import numpy as np
 from decimal import Decimal
@@ -22,7 +21,7 @@ import traceback, sys
 # ##############################
 # MULTITHREADING : SIGNALS CLASS
 # ##############################
-class WorkerSignals(QObject):
+class WorkerSignals(QtCore.QObject):
     '''
     Defines the signals available from a running worker thread.
 
@@ -38,17 +37,17 @@ class WorkerSignals(QObject):
         `object` data returned from processing, anything
 
     '''
-    finished = pyqtSignal()
-    error = pyqtSignal(tuple)
-    result = pyqtSignal(object)
-    progress = pyqtSignal(int)
+    finished = QtCore.pyqtSignal()
+    error = QtCore.pyqtSignal(tuple)
+    result = QtCore.pyqtSignal(object)
+    progress = QtCore.pyqtSignal(int)
 
 # #############################
 # MULTITHREADING : WORKER CLASS
 # #############################
 
 
-class Thread(QThread):
+class Thread(QtCore.QThread):
 	def __init__(self, fn, *args, **kwargs):
 		parent = None
 		super(Thread, self).__init__(parent)
@@ -86,7 +85,7 @@ class CannotConnectException(Exception):
 # #######################
 # GUI : MAIN WINDOW CLASS
 # #######################
-class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
+class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	# =======================================================
 	# INITIALIZING : The UI and setting some needed variables
@@ -116,9 +115,9 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.midMarker = 124 # |
 
 		# Initializing multithreading to allow parallel operations
-		self.threadpool = QThreadPool()
+		self.threadpool = QtCore.QThreadPool()
 		print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
-		self.timer = QTimer()
+		self.timer = QtCore.QTimer()
 		self.timer.setInterval(1000)
 		self.timer.timeout.connect(self.recurring_timer)
 		self.timer.start()
@@ -505,7 +504,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 800)
 		self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 400)
 
-		self.timer = QTimer(self)
+		self.timer = QtCore.QTimer(self)
 		self.timer.timeout.connect(self.update_frame)
 		self.timer.start(5)
 
@@ -1323,7 +1322,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 # I feel better having one of these
 def main():
 	# a new app instance
-	app = QApplication(sys.argv)
+	app = QtWidgets.QApplication(sys.argv)
 	window = MainWindow()
 	window.setWindowTitle("Poseidon Pumps Controller - Pachter Lab Caltech 2018")
 	window.show()
