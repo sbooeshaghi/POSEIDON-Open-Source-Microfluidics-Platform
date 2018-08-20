@@ -341,22 +341,23 @@ void replyToPC() {
 void sendDistanceToPC(int mID) {
   switch (mID) {
   case 1:
-    if (stepper1.distanceToGo() != oldDistanceLeft) {
-
-    Serial.print("P1 distance left: ");
+    Serial.print("<DISP1|");
     Serial.print(stepper1.distanceToGo());
+    Serial.print(">");
+    //if (stepper1.distanceToGo() != oldDistanceLeft) {
 
-    oldDistanceLeft = stepper1.distanceToGo();
-    }
+    //Serial.print("<DISP1|");
+    //Serial.print(stepper1.distanceToGo());
+    //Serial.print(">");
+
+    //oldDistanceLeft = stepper1.distanceToGo();
+    //}
     break;
   case 2:
     if (stepper2.distanceToGo() != oldDistanceLeft) {
-    Serial.print('?');
-    Serial.print("\n");
-    Serial.print("P2 distance left: ");
+    Serial.print("<DISP2|");
     Serial.print(stepper2.distanceToGo());
-    Serial.print('|');
-    Serial.print("\n");
+    Serial.print(">");
     oldDistanceLeft = stepper2.distanceToGo();
   }
   break;
@@ -555,6 +556,7 @@ void runFew(){
             while (stepper1.distanceToGo() > 0) {
               stepper1.runSpeedToPosition();
               getDataFromPC();
+              sendDistanceToPC(1);
             }
           }
           else if (strcmp(dir, "B") == 0) {

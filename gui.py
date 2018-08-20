@@ -46,47 +46,7 @@ class WorkerSignals(QObject):
 # #############################
 # MULTITHREADING : WORKER CLASS
 # #############################
-class Worker(QRunnable):
-    '''
-    Worker thread
 
-    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
-
-    :param callback: The function callback to run on this worker thread. Supplied args and 
-                     kwargs will be passed through to the runner.
-    :type callback: function
-    :param args: Arguments to pass to the callback function
-    :param kwargs: Keywords to pass to the callback function
-
-    '''
-
-    def __init__(self, fn, *args, **kwargs):
-        super(Worker, self).__init__()
-        # Store constructor arguments (re-used for processing)
-        self.fn = fn
-        self.args = args
-        self.kwargs = kwargs
-        self.signals = WorkerSignals()
-
-    @pyqtSlot()
-    def run(self):
-        '''
-        Initialise the runner function with passed args, kwargs.
-        '''
-
-        # Retrieve args/kwargs here; and fire processing using them
-        try:
-            result = self.fn(*self.args, **self.kwargs)
-        except:
-            traceback.print_exc()
-            exctype, value = sys.exc_info()[:2]
-            self.signals.error.emit((exctype, value, traceback.format_exc()))
-        else:
-            self.signals.result.emit(result)  # Return the result of the processing
-        finally:
-            self.signals.finished.emit()  # Done
-
-            print("Job completed")
 
 class Thread(QThread):
 	def __init__(self, fn, *args, **kwargs):
@@ -137,8 +97,6 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		super(MainWindow, self).__init__()
 		self.ui = poseidon_controller_gui.Ui_MainWindow()
 		self.ui.setupUi(self)
-
-
 
 
 		self.populate_syringe_sizes()
@@ -966,6 +924,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				self.serial.bytesize = serial.EIGHTBITS
 				self.serial.timeout = 1
 				self.serial.open()
+				#self.serial.flushInput()
 
 				self.global_listener_thread = Thread(self.listening)
 				self.global_listener_thread.finished.connect(lambda:self.self.thread_finished(self.global_listener_thread))
@@ -1301,9 +1260,10 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			self.serial.flushInput()
 			x = "z"
 			ck = ""
+			isDisplay = "asdf"
 			while self.serial.inWaiting() == 0:
 				pass
-			while  ord(x) != startMarker: 
+			while  not x or ord(x) != startMarker: 
 				x = self.serial.read()
 				#if ord(x) == posMarker:
 				#	return self.get_position()
@@ -1311,6 +1271,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				if ord(x) == midMarker:
 					i += 1
 					print(ck)
+					isDisplay = ck
 					#if i % 100 == 0:
 					#	self.ui.p1_absolute_DISP.display(ck)
 					ck = ""
@@ -1320,10 +1281,13 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 					ck = ck + x.decode()
 
 				x = self.serial.read()
-			print(ck)
-			self.serial.flushInput()
+			print("VALUE: " + ck)
+			if isDisplay == "DISP1":
+				toDisp = self.steps2mm(float(ck))
+				self.ui.p1_absolute_DISP.display(toDisp)
+			#self.serial.flushInput()
 			#print(self.serial.read(self.serial.inWaiting()).decode('ascii'))
-			print("\n\n")
+			print("\n")
 
 	def get_position(self):
 		ck = ""

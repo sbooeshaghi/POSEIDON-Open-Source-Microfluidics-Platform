@@ -30,7 +30,7 @@
        <enum>QTabWidget::Triangular</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="iconSize">
        <size>
@@ -83,10 +83,30 @@
                </widget>
               </item>
               <item row="2" column="3">
-               <widget class="QLCDNumber" name="p2_incremental_DISP"/>
+               <widget class="QLCDNumber" name="p2_incremental_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="3" column="4">
-               <widget class="QLCDNumber" name="p3_remain_DISP"/>
+               <widget class="QLCDNumber" name="p3_remain_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="0" column="3">
                <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -138,7 +158,17 @@
                </widget>
               </item>
               <item row="2" column="4">
-               <widget class="QLCDNumber" name="p3_incremental_DISP"/>
+               <widget class="QLCDNumber" name="p3_incremental_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="0" column="1">
                <layout class="QHBoxLayout" name="horizontalLayout_14">
@@ -190,13 +220,43 @@
                </widget>
               </item>
               <item row="1" column="3">
-               <widget class="QLCDNumber" name="p2_absolute_DISP"/>
+               <widget class="QLCDNumber" name="p2_absolute_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="3" column="1">
-               <widget class="QLCDNumber" name="p1_remain_DISP"/>
+               <widget class="QLCDNumber" name="p1_remain_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="2" column="1">
-               <widget class="QLCDNumber" name="p1_incremental_DISP"/>
+               <widget class="QLCDNumber" name="p1_incremental_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="1" column="0">
                <widget class="QLabel" name="label_58">
@@ -214,10 +274,30 @@
                </widget>
               </item>
               <item row="1" column="4">
-               <widget class="QLCDNumber" name="p3_absolute_DISP"/>
+               <widget class="QLCDNumber" name="p3_absolute_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="3" column="3">
-               <widget class="QLCDNumber" name="p2_remain_DISP"/>
+               <widget class="QLCDNumber" name="p2_remain_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
               </item>
               <item row="0" column="4">
                <layout class="QHBoxLayout" name="horizontalLayout_13">
@@ -267,7 +347,17 @@
                </layout>
               </item>
               <item row="1" column="1">
-               <widget class="QLCDNumber" name="p1_absolute_DISP"/>
+               <widget class="QLCDNumber" name="p1_absolute_DISP">
+                <property name="frameShape">
+                 <enum>QFrame::Panel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="digitCount">
+                 <number>4</number>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>
