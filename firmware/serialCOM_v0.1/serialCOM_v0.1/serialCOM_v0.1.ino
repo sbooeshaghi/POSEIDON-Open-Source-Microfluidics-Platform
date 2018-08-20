@@ -83,7 +83,7 @@
 #define Y_STP     3       // Y
 #define Z_STP     4       // Z
 
-#define BAUD_RATE 115200  // the rate at which data is read
+#define BAUD_RATE 230400  // the rate at which data is read
 
 // AccelStepper is the class we use to run all of the motors in a parallel fashion
 // Documentation can be found here: http://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html
@@ -129,7 +129,9 @@ float optional = 0.0;
 // These are values that we declare to assign as "settings" to each of the steppers
 float motorSpeed = 0.0;
 float motorAccel = 0.0;
-float oldDistanceLeft;
+float oldDistanceLeft1;
+float oldDistanceLeft2;
+float oldDistanceLeft3;
 float jog1Delta;
 float jog2Delta;
 float jog3Delta;
@@ -157,7 +159,7 @@ void setup() {
   digitalWrite(ledPin, HIGH);
   delay(500); // delay() is OK in setup as it only happens once
   digitalWrite(ledPin, LOW);
-  
+  delay(500);
   // tell the PC we are ready
   Serial.println("<Arduino is ready>");
 
@@ -341,33 +343,29 @@ void replyToPC() {
 void sendDistanceToPC(int mID) {
   switch (mID) {
   case 1:
+  if (stepper1.distanceToGo() != oldDistanceLeft1) {
     Serial.print("<DISP1|");
     Serial.print(stepper1.distanceToGo());
     Serial.print(">");
-    //if (stepper1.distanceToGo() != oldDistanceLeft) {
-
-    //Serial.print("<DISP1|");
-    //Serial.print(stepper1.distanceToGo());
-    //Serial.print(">");
-
-    //oldDistanceLeft = stepper1.distanceToGo();
-    //}
+  }
+  oldDistanceLeft1 = stepper1.distanceToGo();
     break;
   case 2:
-    if (stepper2.distanceToGo() != oldDistanceLeft) {
+  if (stepper2.distanceToGo() != oldDistanceLeft2) {
     Serial.print("<DISP2|");
     Serial.print(stepper2.distanceToGo());
     Serial.print(">");
-    oldDistanceLeft = stepper2.distanceToGo();
   }
+  oldDistanceLeft2 = stepper2.distanceToGo();
   break;
   case 3:
-    if (stepper3.distanceToGo() != oldDistanceLeft) {
-    Serial.print("P3 distance left: ");
+  if (stepper3.distanceToGo() != oldDistanceLeft3) {
+    Serial.print("<DISP3|");
     Serial.print(stepper3.distanceToGo());
-    oldDistanceLeft = stepper3.distanceToGo();
-}
-break;
+    Serial.print(">");
+  }
+  oldDistanceLeft3 = stepper3.distanceToGo();
+  break;
   }
 }
 //============
@@ -565,6 +563,7 @@ void runFew(){
             while (stepper1.distanceToGo() < 0) {
               stepper1.runSpeedToPosition();
               getDataFromPC();
+              sendDistanceToPC(1);
             }
           } 
         }
@@ -574,6 +573,8 @@ void runFew(){
             stepper1.move(toMove);
             while (stepper1.distanceToGo() >= 0) {
               stepper1.runSpeedToPosition();
+              getDataFromPC();
+              sendDistanceToPC(1);
             }
           }
           else if (strcmp(dir, "B") == 0) {
@@ -581,6 +582,8 @@ void runFew(){
             stepper1.move(toMove);
             while (stepper1.distanceToGo() <= 0) {
               stepper1.runSpeedToPosition();
+              getDataFromPC();
+              sendDistanceToPC(1);
             }
           }
         }
@@ -596,7 +599,6 @@ void runFew(){
               getDataFromPC();
               sendDistanceToPC(2);
             }
-            Serial.print(">");
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -p2_optional;
@@ -604,6 +606,7 @@ void runFew(){
             while (stepper2.distanceToGo() < 0) {
               stepper2.runSpeedToPosition();
               getDataFromPC();
+              sendDistanceToPC(2);
             }
           } 
         }
@@ -613,6 +616,8 @@ void runFew(){
             stepper2.move(toMove);
             while (stepper2.distanceToGo() >= 0) {
               stepper2.runSpeedToPosition();
+              getDataFromPC();
+              sendDistanceToPC(2);
             }
           }
           else if (strcmp(dir, "B") == 0) {
@@ -621,6 +626,7 @@ void runFew(){
             while (stepper2.distanceToGo() <= 0) {
               stepper2.runSpeedToPosition();
               getDataFromPC();
+              sendDistanceToPC(2);
             }
           }
         }
@@ -634,7 +640,10 @@ void runFew(){
             stepper3.move(toMove);
             while (stepper3.distanceToGo() > 0) {
               stepper3.runSpeedToPosition();
-              getDataFromPC();
+              //getDataFromPC();
+              Serial.print("<");
+              Serial.print("DISP3|");
+              Serial.print(">");
             }
           }
           else if (strcmp(dir, "B") == 0) {
@@ -643,6 +652,7 @@ void runFew(){
             while (stepper3.distanceToGo() < 0) {
               stepper3.runSpeedToPosition();
               getDataFromPC();
+              sendDistanceToPC(3);
             }
           } 
         }
@@ -653,6 +663,9 @@ void runFew(){
             while (stepper3.distanceToGo() >= 0) {
               stepper3.runSpeedToPosition();
               getDataFromPC();
+              //Serial.print("<DISP3|");
+              //Serial.print(stepper3.distanceToGo());
+              //Serial.print(">");
             }
           }
           else if (strcmp(dir, "B") == 0) {
@@ -661,6 +674,7 @@ void runFew(){
             while (stepper3.distanceToGo() <= 0) {
               stepper3.runSpeedToPosition();
               getDataFromPC();
+              sendDistanceToPC(3);
             }
           }
         }

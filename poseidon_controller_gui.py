@@ -700,7 +700,7 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuFile.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -748,7 +748,7 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "Pump 2"))
         self.label_18.setText(_translate("MainWindow", "Speed"))
         self.label_17.setText(_translate("MainWindow", "Units"))
-        self.label_4.setText(_translate("MainWindow", "Pump 2"))
+        self.label_4.setText(_translate("MainWindow", "Pump 3"))
         self.p1_setup_send_BTN.setText(_translate("MainWindow", "Send"))
         self.p2_setup_send_BTN.setText(_translate("MainWindow", "Send"))
         self.p3_setup_send_BTN.setText(_translate("MainWindow", "Send"))

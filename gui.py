@@ -918,7 +918,7 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				
 				self.serial = serial.Serial()
 				self.serial.port = self.port
-				self.serial.baudrate = 115200
+				self.serial.baudrate = 230400
 				self.serial.parity = serial.PARITY_NONE
 				self.serial.stopbits = serial.STOPBITS_ONE
 				self.serial.bytesize = serial.EIGHTBITS
@@ -1281,10 +1281,15 @@ class MainWindow(QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 					ck = ck + x.decode()
 
 				x = self.serial.read()
-			print("VALUE: " + ck)
 			if isDisplay == "DISP1":
 				toDisp = self.steps2mm(float(ck))
 				self.ui.p1_absolute_DISP.display(toDisp)
+			if isDisplay == "DISP2":
+				toDisp = self.steps2mm(float(ck))
+				self.ui.p2_absolute_DISP.display(toDisp)
+			if isDisplay == "DISP3":
+				toDisp = self.steps2mm(float(ck))
+				self.ui.p3_absolute_DISP.display(toDisp)
 			#self.serial.flushInput()
 			#print(self.serial.read(self.serial.inWaiting()).decode('ascii'))
 			print("\n")
