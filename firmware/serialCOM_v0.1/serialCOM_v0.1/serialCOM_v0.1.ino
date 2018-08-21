@@ -313,21 +313,21 @@ void replyToPC() {
     newDataFromPC = false;
     Serial.print("<mode: ");
     Serial.print(mode);
-    Serial.print(" |setting: ");
+    Serial.print(" ,setting: ");
     Serial.print(setting);
-    Serial.print(" |motorID: ");
+    Serial.print(" ,motorID: ");
     Serial.print(motorID);
-    Serial.print(" |value: ");
+    Serial.print(" ,value: ");
     Serial.print(value);
-    Serial.print(" |direction: ");
+    Serial.print(" ,direction: ");
     Serial.print(dir);
-    Serial.print(" |p1 optional: ");
+    Serial.print(" ,p1 optional: ");
     Serial.print(p1_optional);
-    Serial.print(" |p2 optional: ");
+    Serial.print(" ,p2 optional: ");
     Serial.print(p2_optional);
-    Serial.print(" |p3 optional: ");
+    Serial.print(" ,p3 optional: ");
     Serial.print(p3_optional);
-    Serial.print(" |Time ");
+    Serial.print(" ,Time ");
     Serial.print(curMillis >> 9); // divide by 512 is approx = half-seconds
     Serial.println(">");
   }
@@ -551,19 +551,19 @@ void runFew(){
           if (strcmp(dir, "F") == 0){
             toMove = p1_optional;
             stepper1.move(toMove);
+            Serial.print("<START,1>");
             while (stepper1.distanceToGo() > 0) {
               stepper1.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(1);
             }
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -p1_optional;
             stepper1.move(toMove);
+            Serial.print("<START,1>");
             while (stepper1.distanceToGo() < 0) {
               stepper1.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(1);
             }
           } 
         }
@@ -571,19 +571,19 @@ void runFew(){
           if (strcmp(dir, "F") == 0){
             toMove = 999999;
             stepper1.move(toMove);
+            Serial.print("<START,1>");
             while (stepper1.distanceToGo() >= 0) {
               stepper1.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(1);
             }
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -999999;
             stepper1.move(toMove);
+            Serial.print("<START,1>");
             while (stepper1.distanceToGo() <= 0) {
               stepper1.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(1);
             }
           }
         }
@@ -594,19 +594,19 @@ void runFew(){
           if (strcmp(dir, "F") == 0){
             toMove = p2_optional;
             stepper2.move(toMove);
+            Serial.print("<START,2>");
             while (stepper2.distanceToGo() > 0) {
               stepper2.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(2);
             }
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -p2_optional;
             stepper2.move(toMove);
+            Serial.print("<START,2>");
             while (stepper2.distanceToGo() < 0) {
               stepper2.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(2);
             }
           } 
         }
@@ -614,19 +614,19 @@ void runFew(){
           if (strcmp(dir, "F") == 0){
             toMove = 999999;
             stepper2.move(toMove);
+            Serial.print("<START,2>");
             while (stepper2.distanceToGo() >= 0) {
               stepper2.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(2);
             }
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -999999;
             stepper2.move(toMove);
+            Serial.print("<START,2>");
             while (stepper2.distanceToGo() <= 0) {
               stepper2.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(2);
             }
           }
         }
@@ -638,21 +638,19 @@ void runFew(){
           if (strcmp(dir, "F") == 0){
             toMove = p3_optional;
             stepper3.move(toMove);
+            Serial.print("<START,3>");
             while (stepper3.distanceToGo() > 0) {
               stepper3.runSpeedToPosition();
-              //getDataFromPC();
-              Serial.print("<");
-              Serial.print("DISP3|");
-              Serial.print(">");
+              getDataFromPC();
             }
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -p3_optional;
             stepper3.move(toMove);
+            Serial.print("<START,3>");
             while (stepper3.distanceToGo() < 0) {
               stepper3.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(3);
             }
           } 
         }
@@ -660,21 +658,19 @@ void runFew(){
           if (strcmp(dir, "F") == 0){
             toMove = 999999;
             stepper3.move(toMove);
+            Serial.print("<START,3>");
             while (stepper3.distanceToGo() >= 0) {
               stepper3.runSpeedToPosition();
               getDataFromPC();
-              //Serial.print("<DISP3|");
-              //Serial.print(stepper3.distanceToGo());
-              //Serial.print(">");
             }
           }
           else if (strcmp(dir, "B") == 0) {
             toMove = -999999;
             stepper3.move(toMove);
+            Serial.print("<START,3>");
             while (stepper3.distanceToGo() <= 0) {
               stepper3.runSpeedToPosition();
               getDataFromPC();
-              sendDistanceToPC(3);
             }
           }
         }
@@ -687,6 +683,7 @@ void runFew(){
               
               stepper1.move(p1_toMove);
               stepper2.move(p2_toMove);
+              Serial.print("<START,12>");
               while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
@@ -699,6 +696,7 @@ void runFew(){
               
               stepper1.move(p1_toMove);
               stepper2.move(p2_toMove);
+              Serial.print("<START,12>");
               while (stepper1.distanceToGo() <= 0 && stepper2.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
@@ -711,6 +709,7 @@ void runFew(){
               toMove = 999999;
               stepper1.move(toMove);
               stepper2.move(toMove);
+              Serial.print("<START,12>");
               while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
@@ -721,6 +720,7 @@ void runFew(){
               toMove = -999999;
               stepper1.move(toMove);
               stepper2.move(toMove);
+              Serial.print("<START,12>");
               while (stepper1.distanceToGo() <= 0 && stepper2.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
@@ -738,6 +738,7 @@ void runFew(){
               
               stepper1.move(p1_toMove);
               stepper3.move(p3_toMove);
+              Serial.print("<START,13>");
               while (stepper1.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -750,6 +751,7 @@ void runFew(){
               
               stepper1.move(p1_toMove);
               stepper3.move(p3_toMove);
+              Serial.print("<START,13>");
               while (stepper1.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -762,6 +764,7 @@ void runFew(){
               toMove = 999999;
               stepper1.move(toMove);
               stepper3.move(toMove);
+              Serial.print("<START,13>");
               while (stepper1.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -772,6 +775,7 @@ void runFew(){
               toMove = -999999;
               stepper1.move(toMove);
               stepper3.move(toMove);
+              Serial.print("<START,13>");
               while (stepper1.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -789,6 +793,7 @@ void runFew(){
               
               stepper2.move(p2_toMove);
               stepper3.move(p3_toMove);
+              Serial.print("<START,23>");
               while (stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -801,6 +806,7 @@ void runFew(){
               
               stepper2.move(p2_toMove);
               stepper3.move(p3_toMove);
+              Serial.print("<START,23>");
               while (stepper2.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -813,6 +819,7 @@ void runFew(){
               toMove = 999999;
               stepper2.move(toMove);
               stepper3.move(toMove);
+              Serial.print("<START,23>");
               while (stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -823,6 +830,7 @@ void runFew(){
               toMove = -999999;
               stepper2.move(toMove);
               stepper3.move(toMove);
+              Serial.print("<START,23>");
               while (stepper2.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper2.runSpeedToPosition();
                 stepper3.runSpeedToPosition();
@@ -841,6 +849,7 @@ void runFew(){
               stepper1.move(p1_toMove);
               stepper2.move(p2_toMove);
               stepper3.move(p3_toMove);
+              Serial.print("<START,123>");
               while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
@@ -856,6 +865,7 @@ void runFew(){
               stepper1.move(p1_toMove);
               stepper2.move(p2_toMove);
               stepper3.move(p3_toMove);
+              Serial.print("<START,123>");
               while (stepper1.distanceToGo() <= 0 && stepper2.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
@@ -870,6 +880,7 @@ void runFew(){
               stepper1.move(toMove);
               stepper2.move(toMove);
               stepper3.move(toMove);
+              Serial.print("<START,123>");
               while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();
@@ -882,6 +893,7 @@ void runFew(){
               stepper1.move(toMove);
               stepper2.move(toMove);
               stepper3.move(toMove);
+              Serial.print("<START,123>");
               while (stepper1.distanceToGo() <= 0 && stepper2.distanceToGo() <= 0 && stepper3.distanceToGo() <= 0) {
                 stepper1.runSpeedToPosition();
                 stepper2.runSpeedToPosition();

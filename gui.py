@@ -9,8 +9,8 @@ from datetime import datetime
 import time
 # This gets the Qt stuff
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QApplication
-import cv2
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
+#import cv2
 import numpy as np
 from decimal import Decimal
 # This is our window from QtCreator
@@ -76,6 +76,7 @@ class Thread(QtCore.QThread):
 
 
 
+
 # #####################################
 # ERROR HANDLING : CANNOT CONNECT CLASS
 # #####################################
@@ -112,7 +113,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		# Declaring start, mid, and end marker for sending code to Arduino
 		self.startMarker = 60# <
 		self.endMarker = 62  # ,F,0.0>
-		self.midMarker = 124 # |
+		self.midMarker = 44 # ,
 
 		# Initializing multithreading to allow parallel operations
 		self.threadpool = QtCore.QThreadPool()
@@ -153,8 +154,9 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.is_p3_active = False
 
 	def thread_finished(self, th):
+		print("Your thread has completed. Now terminating..")
 		th.stop()
-		print("YO THREAD IS DONE MAYNE!")
+		print("Thread has been terminated.")
 		print("=============================\n\n")
 		# here is where you need to end the thread
 
@@ -227,19 +229,15 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		# TAB : Setup
 		# ~~~~~~~~~~~
 
-		# Port, first populate it then connect it
-		#self.populate_ports()
+		# Port, first populate it then connect it (population done earlier)
 		self.ui.refresh_ports_BTN.clicked.connect(self.refresh_ports)
 		self.ui.port_DROPDOWN.currentIndexChanged.connect(self.set_port)
 
 		# Set the log file name
 		self.date_string =  datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 		self.date_string = self.date_string.replace(":","_") # Replace semicolons with underscores
-		#self.log_file_name = self.ui.log_file_name_INPUT.text() + "_" + self.date_string + ".txt"
-		#self.ui.log_file_name_INPUT.textEdited.connect(self.set_log_file_name)
 
-		# Px syringe size, populate then connect
-		#self.populate_syringe_sizes()
+		# Px syringe size, populate then connect (population done earlier)
 		self.ui.p1_syringe_DROPDOWN.currentIndexChanged.connect(self.set_p1_syringe)
 		self.ui.p2_syringe_DROPDOWN.currentIndexChanged.connect(self.set_p2_syringe)
 		self.ui.p3_syringe_DROPDOWN.currentIndexChanged.connect(self.set_p3_syringe)
@@ -381,7 +379,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				self.coordinate = "incremental"
 
 	def run(self):
-		self.statusBar().showMessage("You clicked Run")
+		self.statusBar().showMessage("You clicked RUN")
 		testData = []
 
 		active_pumps = self.get_active_pumps()
@@ -397,63 +395,70 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 			testData.append(cmd)
 
+			print("Sending RUN command..")
 			thread = Thread(self.runTest, testData)
 			thread.finished.connect(lambda:self.thread_finished(thread))
 			thread.start()
-
-			print("Sending Jog Information")
-			time.sleep(3)
-			#self.runTest(testData)
-				#send jog forward command
+			print("RUN command sent.")
 		else:
 			self.statusBar().showMessage("No pumps enabled.")
 
 
 	def pause(self):
 		if self.ui.pause_BTN.text() == "Pause":
+			self.statusBar().showMessage("You clicked PAUSE")
 			testData = []
 			cmd = "<PAUSE,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
 			testData.append(cmd)
 
+			print("Sending PAUSE command..")
 			thread = Thread(self.runTest, testData)
 			thread.finished.connect(lambda:self.thread_finished(thread))
 			thread.start()
+			print("PAUSE command sent.")
 
 			self.ui.pause_BTN.setText("Resume")
 
 		elif self.ui.pause_BTN.text() == "Resume":
+			self.statusBar().showMessage("You clicked RESUME")
 			testData = []
 			cmd = "<RESUME,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
 			testData.append(cmd)
 
+			print("Sending RESUME command..")
 			thread = Thread(self.runTest, testData)
 			thread.finished.connect(lambda:self.thread_finished(thread))
 			thread.start()
+			print("RESUME command sent.")
 
 			self.ui.pause_BTN.setText("Pause")
 
 
 	def zero(self):
-		self.statusBar().showMessage("You clicked Zero")
+		self.statusBar().showMessage("You clicked ZERO")
 		testData = []
 
 		cmd = "<ZERO,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
 		
+		print("Sending ZERO command..")
 		thread = Thread(self.runTest, testData)
 		thread.finished.connect(lambda:self.thread_finished(thread))
 		thread.start()
-		print("Sending Setup Information")
+		print("ZERO command sent.")
 
 
 	def stop(self):
+		self.statusBar().showMessage("You clicked STOP")
 		cmd = "<STOP,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
 
+		print("Sending STOP command..")
 		thread = Thread(self.send_single_command, cmd)
 		thread.finished.connect(lambda:self.thread_finished(thread))
 		thread.start()
-		print("Stopping")
+		print("STOP command sent.")
 
 	def jog(self, btn):
+		self.statusBar().showMessage("You clicked JOG")
 		#self.serial.flushInput()
 		testData = []
 		active_pumps = self.get_active_pumps()
@@ -465,30 +470,26 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			three_jog = str(self.p3_setup_jog_delta_to_send)
 				 
 			if btn.text() == "Jog +":
+				self.statusBar().showMessage("You clicked JOG -")
 				f_cmd = "<RUN,DIST," + pumps_2_run +",0,F," + one_jog + "," + two_jog + "," + three_jog + ">"
 				testData.append(f_cmd)
 
+				print("Sending JOG command..")
 				thread = Thread(self.runTest, testData)
 				thread.finished.connect(lambda:self.thread_finished(thread))
 				thread.start()
+				print("JOG command sent.")
 
-				print("Sending Jog Information")
-				#time.sleep(3)
-				#send jog forward command
-			if btn.text() == "Jog -":
-				#add optional argument for direction
+			elif btn.text() == "Jog -":
+				self.statusBar().showMessage("You clicked JOG -")
 				b_cmd = "<RUN,DIST," + pumps_2_run +",0,B," + one_jog + "," + two_jog + "," + three_jog + ">"
 				testData.append(b_cmd)
 
-
+				print("Sending JOG command..")
 				thread = Thread(self.runTest, testData)
 				thread.finished.connect(lambda:self.thread_finished(thread))
 				thread.start()
-
-				print("Sending Jog Information")
-				#time.sleep(3)
-
-				#send jog forward command
+				print("JOG command sent.")
 		else:
 			self.statusBar().showMessage("No pumps enabled.")
 
@@ -498,6 +499,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	# Initialize the camera
 	def start_camera(self):
+		self.statusBar().showMessage("You clicked START CAMERA")
 		camera_port = 0
 		self.capture = cv2.VideoCapture(camera_port)
 		#TODO check the native resolution of the camera and scale the size down here
@@ -559,6 +561,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	        :returns:
 	            A list of the serial ports available on the system
 	    """
+	    print("Populating ports..")
 	    if sys.platform.startswith('win'):
 	        ports = ['COM%s' % (i + 1) for i in range(256)]
 	    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -578,9 +581,11 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	        except (OSError, serial.SerialException):
 	            pass
 	    self.ui.port_DROPDOWN.addItems(result)
+	    print("Ports have been populated.")
 
 	# Refresh the list of ports
 	def refresh_ports(self):
+		self.statusBar().showMessage("You clicked REFRESH PORTS")
 		self.ui.port_DROPDOWN.clear()
 		self.populate_ports()
 
@@ -602,7 +607,6 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		# Replace semicolons with underscores
 		self.date_string = self.date_string.replace(":","_")
-
 		self.log_file_name = self.ui.log_file_name_INPUT.text() + "_" + self.date_string + ".png"
 
 	def save_settings(self):
@@ -617,25 +621,25 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		# write all of the settings here
 		## Settings for pump 1
-		p1_syringe = str(self.p1_syringe)
-		p1_units = str(self.p1_units)
-		p1_speed = str(self.p1_speed)
-		p1_accel = str(self.p1_accel)
-		p1_setup_jog_delta = str(self.p1_setup_jog_delta)
+		p1_syringe 			= str(self.p1_syringe)
+		p1_units 			= str(self.p1_units)
+		p1_speed 			= str(self.p1_speed)
+		p1_accel 			= str(self.p1_accel)
+		p1_setup_jog_delta 	= str(self.p1_setup_jog_delta)
 
 		## Settings for pump 2
-		p2_syringe = str(self.p2_syringe)
-		p2_units = str(self.p2_units)
-		p2_speed = str(self.p2_speed)
-		p2_accel = str(self.p2_accel)
-		p2_setup_jog_delta = str(self.p2_setup_jog_delta)
+		p2_syringe 			= str(self.p2_syringe)
+		p2_units 			= str(self.p2_units)
+		p2_speed 			= str(self.p2_speed)
+		p2_accel 			= str(self.p2_accel)
+		p2_setup_jog_delta 	= str(self.p2_setup_jog_delta)
 
 		## Settings for pump 3
-		p3_syringe = str(self.p3_syringe)
-		p3_units = str(self.p3_units)
-		p3_speed = str(self.p3_speed)
-		p3_accel = str(self.p3_accel)
-		p3_setup_jog_delta = str(self.p3_setup_jog_delta)
+		p3_syringe 			= str(self.p3_syringe)
+		p3_units 			= str(self.p3_units)
+		p3_speed 			= str(self.p3_speed)
+		p3_accel 			= str(self.p3_accel)
+		p3_setup_jog_delta 	= str(self.p3_setup_jog_delta)
 
 		text = []
 		text.append("File name: " + name + "\n") 				# line 0
@@ -675,42 +679,37 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			fname = text[0]
 			date_string = text[1]
 
-			p1_syringe = text[3]
-			p1_units = text[4]
-			p1_speed = text[5]
-			p1_accel = text[6]
-			p1_setup_jog_delta = text[7]
+			p1_syringe 			= text[3]
+			p1_units 			= text[4]
+			p1_speed 			= text[5]
+			p1_accel 			= text[6]
+			p1_setup_jog_delta 	= text[7]
 
-			p2_syringe = text[9]
-			p2_units = text[10]
-			p2_speed = text[11]
-			p2_accel = text[12]
-			p2_setup_jog_delta = text[13]
+			p2_syringe 			= text[9]
+			p2_units 			= text[10]
+			p2_speed 			= text[11]
+			p2_accel 			= text[12]
+			p2_setup_jog_delta 	= text[13]
 
-			p3_syringe = text[15]
-			p3_units = text[16]
-			p3_speed = text[17]
-			p3_accel = text[18]
-			p3_setup_jog_delta = text[19]
+			p3_syringe 			= text[15]
+			p3_units 			= text[16]
+			p3_speed 			= text[17]
+			p3_accel 			= text[18]
+			p3_setup_jog_delta 	= text[19]
 
 			#print(fname, date_string, p1_syringe, p1_units, p1_speed, p1_accel, p1_setup_jog_delta)
 
+		# Here we are setting all of the values as given by the settings file
 		p1_syringe_index = self.ui.p1_syringe_DROPDOWN.findText(p1_syringe, QtCore.Qt.MatchFixedString)
 		self.ui.p1_syringe_DROPDOWN.setCurrentIndex(p1_syringe_index)
 		p1_units_index = self.ui.p1_units_DROPDOWN.findText(p1_units, QtCore.Qt.MatchFixedString)
 		self.ui.p1_units_DROPDOWN.setCurrentIndex(p1_units_index)
 		self.ui.p1_speed_INPUT.setValue(float(p1_speed))
 		self.ui.p1_accel_INPUT.setValue(float(p1_accel))
-		# print('==================')
-		# print("This is the jog: ", p1_setup_jog_delta)
-		# print('type: ', str(type(p1_setup_jog_delta)))
-		# print('==================')
+
 		AllItems = [self.ui.p1_setup_jog_delta_INPUT.itemText(i) for i in range(self.ui.p1_setup_jog_delta_INPUT.count())]
-		# print("This is the list of jogs: ",AllItems)
 
 		p1_setup_jog_delta_index = self.ui.p1_setup_jog_delta_INPUT.findText(p1_setup_jog_delta, QtCore.Qt.MatchFixedString)
-		
-		# print("p1_setup_jog_delta_index is: ",p1_setup_jog_delta_index)
 		self.ui.p1_setup_jog_delta_INPUT.setCurrentIndex(p1_setup_jog_delta_index)
 
 
@@ -723,7 +722,6 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		p2_setup_jog_delta_index = self.ui.p2_setup_jog_delta_INPUT.findText(p2_setup_jog_delta, QtCore.Qt.MatchFixedString)
 		self.ui.p2_setup_jog_delta_INPUT.setCurrentIndex(p2_setup_jog_delta_index)
-
 
 		p3_syringe_index = self.ui.p3_syringe_DROPDOWN.findText(p3_syringe, QtCore.Qt.MatchFixedString)
 		self.ui.p3_syringe_DROPDOWN.setCurrentIndex(p3_syringe_index)
@@ -759,6 +757,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.set_p1_accel()
 		self.set_p1_setup_jog_delta()
 		self.set_p1_amount()
+
 	def set_p2_syringe(self):
 		self.p2_syringe = self.ui.p2_syringe_DROPDOWN.currentText()
 		self.p2_syringe_area = self.syringe_areas[self.syringe_options.index(self.p2_syringe)]
@@ -769,6 +768,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.set_p2_accel()
 		self.set_p2_setup_jog_delta()
 		self.set_p2_amount()
+
 	def set_p3_syringe(self):
 		self.p3_syringe = self.ui.p3_syringe_DROPDOWN.currentText()
 		self.p3_syringe_area = self.syringe_areas[self.syringe_options.index(self.p3_syringe)]
@@ -787,12 +787,14 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.set_p1_accel()
 		self.set_p1_setup_jog_delta()
 		self.set_p1_amount()
+
 	def set_p2_units(self):
 		self.p2_units = self.ui.p2_units_DROPDOWN.currentText()
 		self.set_p2_speed()
 		self.set_p2_accel()
 		self.set_p2_setup_jog_delta()
 		self.set_p2_amount()
+
 	def set_p3_units(self):
 		self.p3_units = self.ui.p3_units_DROPDOWN.currentText()
 		self.set_p3_speed()
@@ -819,28 +821,25 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.p1_units_LABEL.setText(str(self.p1_speed) + " " + self.ui.p1_units_DROPDOWN.currentText())
 		self.p1_speed_to_send = self.convert_speed(self.p1_speed, self.p1_units, self.p1_syringe_area)
 
-		# print(str(self.p1_speed) + " // " + str(self.p1_speed_to_send))
 	def set_p2_speed(self):
 		self.p2_speed = self.ui.p2_speed_INPUT.value()
 		self.ui.p2_units_LABEL.setText(str(self.p2_speed) + " " + self.ui.p2_units_DROPDOWN.currentText())
 		self.p2_speed_to_send = self.convert_speed(self.p2_speed, self.p2_units, self.p2_syringe_area)
 
-		# print(str(self.p2_speed) + " // " + str(self.p2_speed_to_send))
 	def set_p3_speed(self):
 		self.p3_speed = self.ui.p3_speed_INPUT.value()
 		self.ui.p3_units_LABEL.setText(str(self.p3_speed) + " " + self.ui.p3_units_DROPDOWN.currentText())
 		self.p3_speed_to_send = self.convert_speed(self.p3_speed, self.p3_units, self.p3_syringe_area)
 
-		# print(str(self.p3_speed) + " // " + str(self.p3_speed_to_send))
-
 	# Set Px accel TODO
 	def set_p1_accel(self):
 		self.p1_accel = self.ui.p1_accel_INPUT.value()
 		self.p1_accel_to_send = self.convert_accel(self.p1_accel, self.p1_units, self.p1_syringe_area)
-		# print(str(self.p1_accel) + " // " + str(self.p1_accel_to_send))
+
 	def set_p2_accel(self):
 		self.p2_accel = self.ui.p2_accel_INPUT.value()
 		self.p2_accel_to_send = self.convert_accel(self.p2_accel, self.p2_units, self.p2_syringe_area)
+
 	def set_p3_accel(self):
 		self.p3_accel = self.ui.p3_accel_INPUT.value()
 		self.p3_accel_to_send = self.convert_accel(self.p3_accel, self.p3_units, self.p3_syringe_area)
@@ -850,71 +849,64 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.p1_setup_jog_delta = self.ui.p1_setup_jog_delta_INPUT.currentText()
 		self.p1_setup_jog_delta = float(self.ui.p1_setup_jog_delta_INPUT.currentText())
 		self.p1_setup_jog_delta_to_send = self.convert_displacement(self.p1_setup_jog_delta, self.p1_units, self.p1_syringe_area)
+
 	def set_p2_setup_jog_delta(self):
 		self.p2_setup_jog_delta = float(self.ui.p2_setup_jog_delta_INPUT.currentText())
 		self.p2_setup_jog_delta_to_send = self.convert_displacement(self.p2_setup_jog_delta, self.p2_units, self.p2_syringe_area)
+
 	def set_p3_setup_jog_delta(self):
 		self.p3_setup_jog_delta = float(self.ui.p3_setup_jog_delta_INPUT.currentText())
 		self.p3_setup_jog_delta_to_send = self.convert_displacement(self.p3_setup_jog_delta, self.p3_units, self.p3_syringe_area)
 
 	# Send Px settings
 	def send_p1_settings(self):
-
-
+		self.statusBar().showMessage("You clicked SEND P1 SETTINGS")
 		self.p1_settings = []
 		self.p1_settings.append("<SETTING,SPEED,1," + str(self.p1_speed_to_send) + ",F,0.0,0.0,0.0>")
 		self.p1_settings.append("<SETTING,ACCEL,1," + str(self.p1_accel_to_send) + ",F,0.0,0.0,0.0>")
 		self.p1_settings.append("<SETTING,DELTA,1," + str(self.p1_setup_jog_delta_to_send) + ",F,0.0,0.0,0.0>")
 
-		#worker = Worker(self.runTest, self.p1_settings)
-
+		print("Sending P1 SETTINGS..")
 		thread = Thread(self.runTest, self.p1_settings)
 		thread.finished.connect(lambda:self.thread_finished(thread))
 		thread.start()
-
-		print("Sending P1 Setup Information")
-		self.statusBar().showMessage("Sending P1 setup information.")
-		#self.threadpool.start(worker)
+		print("P1 SETTINGS sent.")
 		
 	def send_p2_settings(self):
+		self.statusBar().showMessage("You clicked SEND P2 SETTINGS")
 		self.p2_settings = []
 		self.p2_settings.append("<SETTING,SPEED,2," + str(self.p2_speed_to_send) + ",F,0.0,0.0,0.0>")
 		self.p2_settings.append("<SETTING,ACCEL,2," + str(self.p2_accel_to_send) + ",F,0.0,0.0,0.0>")
 		self.p2_settings.append("<SETTING,DELTA,2," + str(self.p2_setup_jog_delta_to_send) + ",F,0.0,0.0,0.0>")
 
-
-
+		print("Sending P2 SETTINGS..")
 		thread = Thread(self.runTest, self.p2_settings)
 		thread.finished.connect(lambda:self.thread_finished(thread))
 		thread.start()
-
-		print("Sending P2 Setup Information")
-		self.statusBar().showMessage("Sending P2 setup information.")
+		print("P2 SETTINGS sent.")
 
 	def send_p3_settings(self):
+		self.statusBar().showMessage("You clicked SEND P3 SETTINGS")
 		self.p3_settings = []
 		self.p3_settings.append("<SETTING,SPEED,3," + str(self.p3_speed_to_send) + ",F,0.0,0.0,0.0>")
 		self.p3_settings.append("<SETTING,ACCEL,3," + str(self.p3_accel_to_send) + ",F,0.0,0.0,0.0>")
 		self.p3_settings.append("<SETTING,DELTA,3," + str(self.p3_setup_jog_delta_to_send) + ",F,0.0,0.0,0.0>")
 
-
+		print("Sending P3 SETTINGS..")
 		thread = Thread(self.runTest, self.p3_settings)
 		thread.finished.connect(lambda:self.thread_finished(thread))
 		thread.start()
-
-		print("Sending P3 Setup Information")
-		self.statusBar().showMessage("Sending P3 setup information.")
+		print("P3 SETTINGS sent.")
 
 	# Connect to the Arduino board
 	def connect(self):
 		#self.port_nano = '/dev/cu.usbserial-A9M11B77'
 		#self.port_uno = "/dev/cu.usbmodem1411"
 		#self.baudrate = baudrate
-		self.statusBar().showMessage("Attempting to connect to board..")
+		self.statusBar().showMessage("You clicked CONNECT TO CONTROLLER")
 		try:
 			port_declared = self.port in vars()
 			try:
-				
 				self.serial = serial.Serial()
 				self.serial.port = self.port
 				self.serial.baudrate = 230400
@@ -925,12 +917,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				self.serial.open()
 				#self.serial.flushInput()
 
+				# This is a thread that always runs and listens to commands from the Arduino
 				self.global_listener_thread = Thread(self.listening)
 				self.global_listener_thread.finished.connect(lambda:self.self.thread_finished(self.global_listener_thread))
 				self.global_listener_thread.start()
-
-				#self.wait_for_arduino()
-				self.statusBar().showMessage("Successfully connected to board.")
 
 				# ~~~~~~~~~~~~~~~~
 				# TAB : Setup
@@ -942,16 +932,25 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				self.ui.send_all_BTN.setEnabled(True)
 
 				self.ui.connect_BTN.setEnabled(False)
+				time.sleep(3)
+				self.statusBar().showMessage("Successfully connected to board.")
 			except:
 				self.statusBar().showMessage("Cannot connect to board. Try again..")
 				raise CannotConnectException
 		except AttributeError:
 			self.statusBar().showMessage("Please plug in the board and select a proper port, then press connect.")
 
+		
+
 	# Disconnect from the Arduino board
+	# TODO: figure out how to handle error..
 	def disconnect(self):
+		self.statusBar().showMessage("You clicked DISCONNECT FROM BOARD")
+		print("Disconnecting from board..")
+		self.global_listener_thread.stop()
+		time.sleep(3)
 		self.serial.close()
-		self.statusBar().showMessage("The board has been disconnected.")
+		print("Board has been disconnected")
 
 		self.grey_out_components()
 		self.ui.connect_BTN.setEnabled(True)
@@ -959,6 +958,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	# Send all settings
 	def send_all(self):
+		self.statusBar().showMessage("You clicked SEND ALL SETTINGS")
+
 		self.settings = []
 		self.settings.append("<SETTING,SPEED,1,"+str(self.p1_speed_to_send)+",F,0.0,0.0,0.0>")
 		self.settings.append("<SETTING,ACCEL,1,"+str(self.p1_accel_to_send)+",F,0.0,0.0,0.0>")
@@ -972,19 +973,12 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.settings.append("<SETTING,ACCEL,3,"+str(self.p3_accel_to_send)+",F,0.0,0.0,0.0>")
 		self.settings.append("<SETTING,DELTA,3,"+str(self.p3_setup_jog_delta_to_send)+",F,0.0,0.0,0.0>")
 
-
+		print("Sending all settings..")
 		thread = Thread(self.runTest, self.settings)
 		thread.finished.connect(lambda:self.thread_finished(thread))
 		thread.start()
 
-		print("Sending all setup information")
-		self.statusBar().showMessage("Sending all setup information.")
 		self.ungrey_out_components()
-
-
-
-
-
 
 
 
@@ -1079,9 +1073,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		elif length == "µL":
 			displacement = self.uL2steps(displacement, syringe_area)
 
-		print('________________________________________________________')
+		print('______________________________')
 		print("INP DISP: " + str(inp_displacement) + ' ' + length)
 		print("OUT DISP: " + str(displacement) + ' steps')
+		print('\n############################################################\n')
 		return displacement
 
 	def convert_speed(self, inp_speed, units, syringe_area):
@@ -1106,7 +1101,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		elif time == "hr":
 			speed = self.perhour2persec(speed)
 
-		print('========================================================')
+		
 
 		print("INP SPEED: " + str(inp_speed) + ' ' + units)
 		print("OUT SPEED: " + str(speed) + ' steps/s')
@@ -1134,7 +1129,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		elif time == "hr":
 			accel = self.perhour2persec(self.perhour2persec(accel))
 
-		print('________________________________________________________')
+		print('______________________________')
 		print("INP ACCEL: " + str(inp_accel) + ' ' + units + '/' + time)
 		print("OUT ACCEL: " + str(accel) + ' steps/s/s')
 		return accel
@@ -1156,13 +1151,6 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 
 
-
-
-
-
-
-
-
 	#====================================== Reading and Writing to Arduino
 
 	def sendToArduino(self, sendStr):
@@ -1177,7 +1165,6 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		ck = ""
 		x = "z" # any value that is not an end- or startMarker
-		byteCount = -1 # to allow for the fact that the last increment will be one too many
 	  
 		# wait for the start character
 		while  ord(x) != startMarker: 
@@ -1194,7 +1181,6 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			if ord(x) != startMarker:
 		    #print(x)
 				ck = ck + x.decode()
-				byteCount += 1
 
 			x = self.serial.read()
 
@@ -1203,7 +1189,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	#============================
 
 
-	def runTest(self,td):
+	def runTest(self, td):
 		numLoops = len(td)
 		waitingForReply = False
 		n = 0
@@ -1213,7 +1199,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 			if waitingForReply == False:
 				self.sendToArduino(teststr)
-				print("Sent from PC :LOOP NUM " + str(n) + " STR " + teststr)
+				print("Sent from PC -- " + teststr)
 				waitingForReply = True
 
 			if waitingForReply == True:
@@ -1222,11 +1208,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 					pass
 
 				#dataRecvd = self.recvFromArduino2()
-				print("Reply Received : ")
+				print("Reply Received -- ")
 				n += 1
 				waitingForReply = False
 
-				#print("=============================\n\n")
 
 			time.sleep(0.1)
 		print("Send and receive complete\n\n")
@@ -1249,6 +1234,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 
 	def listening(self):
+		# TODO print begin of a sequence
 		startMarker = self.startMarker
 		midMarker = self.midMarker
 		endMarker = self.endMarker
@@ -1280,15 +1266,11 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 					ck = ck + x.decode()
 
 				x = self.serial.read()
-			if isDisplay == "DISP1":
-				toDisp = self.steps2mm(float(ck))
-				self.ui.p1_absolute_DISP.display(toDisp)
-			if isDisplay == "DISP2":
-				toDisp = self.steps2mm(float(ck))
-				self.ui.p2_absolute_DISP.display(toDisp)
-			if isDisplay == "DISP3":
-				toDisp = self.steps2mm(float(ck))
-				self.ui.p3_absolute_DISP.display(toDisp)
+			#if isDisplay == "START":
+			#	toDisp = self.steps2mm(float(ck))
+			#	print("Pump num " + toDisp + " is now running.")i
+				#self.ui.p1_absolute_DISP.display(toDisp)
+
 			#self.serial.flushInput()
 			#print(self.serial.read(self.serial.inWaiting()).decode('ascii'))
 			print("\n")
