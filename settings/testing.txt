@@ -1,5 +1,5 @@
 File name: /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/settings/testing.txt
-Date time: 2018-08-22 10_50_43
+Date time: 2018-08-22 15_14_17
 :================================ 
 P1 Syrin: BD 10 mL
 P1 Units: mm/s
@@ -11,11 +11,11 @@ P2 Syrin: BD 5 mL
 P2 Units: mm/s
 P2 Speed: 1.0
 P2 Accel: 99999.0
-P2 Jog D: 0.1
+P2 Jog D: 1.0
 :================================ 
 P3 Syrin: BD 3 mL
 P3 Units: mm/s
 P3 Speed: 0.1
 P3 Accel: 99999.0
-P3 Jog D: 0.01
+P3 Jog D: 0.1
 Exp Note: This is the settings file. Simple a test!

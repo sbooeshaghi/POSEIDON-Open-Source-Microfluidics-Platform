@@ -473,10 +473,13 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	# Clean up this text
 	def pause(self):
+		active_pumps = self.get_active_pumps()
+		pumps_2_run = ''.join(map(str,active_pumps))
+
 		if self.ui.pause_BTN.text() == "Pause":
 			self.statusBar().showMessage("You clicked PAUSE")
 			testData = []
-			cmd = "<PAUSE,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
+			cmd = "<PAUSE,BLAH," + pumps_2_run + ",BLAH,F,0.0,0.0,0.0>"
 			testData.append(cmd)
 
 			print("Sending PAUSE command..")
@@ -490,7 +493,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		elif self.ui.pause_BTN.text() == "Resume":
 			self.statusBar().showMessage("You clicked RESUME")
 			testData = []
-			cmd = "<RESUME,BLAH,BLAH,BLAH,F,0.0,0.0,0.0>"
+			cmd = "<RESUME,BLAH," + pumps_2_run + ",BLAH,F,0.0,0.0,0.0>"
 			testData.append(cmd)
 
 			print("Sending RESUME command..")

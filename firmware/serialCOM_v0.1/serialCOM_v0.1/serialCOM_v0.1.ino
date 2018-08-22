@@ -144,6 +144,15 @@ float p2_optional;
 float p3_optional;
 signed long p1_distance_to_go;
 signed long p1_target_position;
+signed long p1_distance_left;
+
+signed long p2_distance_to_go;
+signed long p2_target_position;
+signed long p2_distance_left;
+
+signed long p3_distance_to_go;
+signed long p3_target_position;
+signed long p3_distance_left;
 
 unsigned long curMillis;
 unsigned long prevReplyToPCmillis = 0;
@@ -968,23 +977,208 @@ void stopAll() {
 }
 
 void pauseRun() {
-  p1_distance_to_go = stepper1.distanceToGo();
-  p1_target_position = stepper1.targetPosition();
-  stepper1.move(p1_distance_to_go);
-  while (strcmp(mode, "RESUME") != 0) {
-    // do nothing
-    getDataFromPC();
-  }
-  resumeRun();
-  
+  switch (motorID) {
+    case 1:
+      p1_distance_to_go = stepper1.distanceToGo();
+      p1_target_position = stepper1.targetPosition();
+      p1_distance_left = p1_distance_to_go - p1_distance_left;
+      stepper1.move(p1_distance_to_go);
+      while (strcmp(mode, "RESUME") != 0) {
+        // do nothing
+        getDataFromPC();
+        replyToPC();
+      }
+      resumeRun();
+      break;
+
+    case 2:
+      p2_distance_to_go = stepper2.distanceToGo();
+      p2_target_position = stepper2.targetPosition();
+      p2_distance_left = p2_distance_to_go - p2_distance_left;
+      stepper2.move(p2_distance_to_go);
+      while (strcmp(mode, "RESUME") != 0) {
+        // do nothing
+        getDataFromPC();
+        replyToPC();
+      }
+      resumeRun();
+      break;
+
+    case 3:
+      p3_distance_to_go = stepper3.distanceToGo();
+      p3_target_position = stepper3.targetPosition();
+      p3_distance_left = p3_distance_to_go - p3_distance_left;
+      stepper3.move(p3_distance_to_go);
+      while (strcmp(mode, "RESUME") != 0) {
+        // do nothing
+        getDataFromPC();
+        replyToPC();
+      }
+      resumeRun();
+      break;
+
+    case 12:
+      p1_distance_to_go = stepper1.distanceToGo();
+      p1_target_position = stepper1.targetPosition();
+      p1_distance_left = p1_distance_to_go - p1_distance_left;
+      stepper1.move(p1_distance_to_go);
+
+      p2_distance_to_go = stepper2.distanceToGo();
+      p2_target_position = stepper2.targetPosition();
+      p2_distance_left = p2_distance_to_go - p2_distance_left;
+      stepper2.move(p2_distance_to_go);
+
+      
+      while (strcmp(mode, "RESUME") != 0) {
+        // do nothing
+        getDataFromPC();
+        replyToPC();
+      }
+      resumeRun();
+      break;
+
+    case 13:
+      p1_distance_to_go = stepper1.distanceToGo();
+      p1_target_position = stepper1.targetPosition();
+      p1_distance_left = p1_distance_to_go - p1_distance_left;
+      stepper1.move(p1_distance_to_go);
+
+      p3_distance_to_go = stepper3.distanceToGo();
+      p3_target_position = stepper3.targetPosition();
+      p3_distance_left = p3_distance_to_go - p3_distance_left;
+      stepper3.move(p3_distance_to_go);
+
+      while (strcmp(mode, "RESUME") != 0) {
+        // do nothing
+        getDataFromPC();
+        replyToPC();
+      }
+      resumeRun();
+      break;
+
+    case 23:
+      p2_distance_to_go = stepper2.distanceToGo();
+      p2_target_position = stepper2.targetPosition();
+      p2_distance_left = p2_distance_to_go - p2_distance_left;
+      stepper2.move(p2_distance_to_go);
+
+      p3_distance_to_go = stepper3.distanceToGo();
+      p3_target_position = stepper3.targetPosition();
+      p3_distance_left = p3_distance_to_go - p3_distance_left;
+      stepper3.move(p3_distance_to_go);
+
+      
+      while (strcmp(mode, "RESUME") != 0) {
+        // do nothing
+        getDataFromPC();
+        replyToPC();
+      }
+      resumeRun();
+      break;
+      
+    case 123:
+      p1_distance_to_go = stepper1.distanceToGo();
+      p1_target_position = stepper1.targetPosition();
+      p1_distance_left = p1_distance_to_go - p1_distance_left;
+      stepper1.move(p1_distance_to_go);
+    
+      p2_distance_to_go = stepper2.distanceToGo();
+      p2_target_position = stepper2.targetPosition();
+      p2_distance_left = p2_distance_to_go - p2_distance_left;
+      stepper2.move(p2_distance_to_go);
+
+      p3_distance_to_go = stepper3.distanceToGo();
+      p3_target_position = stepper3.targetPosition();
+      p3_distance_left = p3_distance_to_go - p3_distance_left;
+      stepper3.move(p3_distance_to_go);
+
+      
+      while (strcmp(mode, "RESUME") != 0) {
+        // do nothing
+        getDataFromPC();
+        replyToPC();
+      }
+      resumeRun();
+      break;
+    }
+    
 }
 
+
 void resumeRun() {
-  stepper1.move(p1_target_position);
-  while (stepper1.distanceToGo() >= 0) {
-    stepper1.runSpeedToPosition();
-    getDataFromPC();
-  }
-  stepper1.setCurrentPosition(0);
+  switch (motorID) {
+    case 1:
+      stepper1.move(p1_distance_left);
+      while (stepper1.distanceToGo() >= 0) {
+        stepper1.runSpeedToPosition();
+        getDataFromPC();
+      }
+      stepper1.setCurrentPosition(0);
+      break;
+    case 2:
+      stepper2.move(p2_distance_left);
+      while (stepper2.distanceToGo() >= 0) {
+        stepper2.runSpeedToPosition();
+        getDataFromPC();
+      }
+      stepper2.setCurrentPosition(0);
+      break;
+    case 3:
+      stepper3.move(p3_distance_left);
+      while (stepper3.distanceToGo() >= 0) {
+        stepper3.runSpeedToPosition();
+        getDataFromPC();
+      }
+      stepper3.setCurrentPosition(0);
+      break;
+    case 12:
+      stepper1.move(p1_distance_left);
+      stepper2.move(p2_distance_left);
+      while (stepper1.distanceToGo() >= 0 && stepper2.distanceToGo() >= 0) {
+        stepper1.runSpeedToPosition();
+        stepper2.runSpeedToPosition();
+        getDataFromPC();
+      }
+      stepper1.setCurrentPosition(0);
+      stepper2.setCurrentPosition(0);
+      break;
+    case 13:
+      stepper1.move(p1_distance_left);
+      stepper3.move(p3_distance_left);
+      while (stepper1.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
+        stepper1.runSpeedToPosition();
+        stepper3.runSpeedToPosition();
+        getDataFromPC();
+      }
+      stepper1.setCurrentPosition(0);
+      stepper3.setCurrentPosition(0);
+      break;
+    case 23:
+      stepper2.move(p2_distance_left);
+      stepper3.move(p3_distance_left);
+      while (stepper2.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
+        stepper2.runSpeedToPosition();
+        stepper3.runSpeedToPosition();
+        getDataFromPC();
+      }
+      stepper2.setCurrentPosition(0);
+      stepper3.setCurrentPosition(0);
+      break;
+    case 123:
+      stepper1.move(p1_distance_left);
+      stepper1.move(p1_distance_left);
+      stepper3.move(p3_distance_left);
+      while (stepper1.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0 && stepper3.distanceToGo() >= 0) {
+        stepper1.runSpeedToPosition();
+        stepper2.runSpeedToPosition();
+        stepper3.runSpeedToPosition();
+        getDataFromPC();
+      }
+      stepper1.setCurrentPosition(0);
+      stepper2.setCurrentPosition(0);
+      stepper3.setCurrentPosition(0);
+      break;
+      }
+
 }
 
