@@ -321,13 +321,13 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.send_all_BTN.clicked.connect(self.send_all)
 
 	def send_p1_warning(self):
-		self.ui.p1_setup_send_BTN.setStyleSheet("background-color: green")
+		self.ui.p1_setup_send_BTN.setStyleSheet("background-color: green; color: black")
 
 	def send_p2_warning(self):
-		self.ui.p2_setup_send_BTN.setStyleSheet("background-color: green")
+		self.ui.p2_setup_send_BTN.setStyleSheet("background-color: green; color: black")
 
 	def send_p3_warning(self):
-		self.ui.p3_setup_send_BTN.setStyleSheet("background-color: green")
+		self.ui.p3_setup_send_BTN.setStyleSheet("background-color: green; color: black")
 
 	def send_p1_success(self):
 		self.ui.p1_setup_send_BTN.setStyleSheet("background-color: none")
