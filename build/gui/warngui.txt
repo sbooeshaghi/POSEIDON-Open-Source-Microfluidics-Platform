@@ -7,35 +7,35 @@ missing module named multiprocessing.set_start_method - imported by multiprocess
 missing module named multiprocessing.get_start_method - imported by multiprocessing, multiprocessing.spawn
 missing module named multiprocessing.SimpleQueue - imported by multiprocessing, concurrent.futures.process
 missing module named pyimod03_importers - imported by /Users/sinabooeshaghi/software/anaconda/envs/poseidon_controller/lib/python3.6/site-packages/PyInstaller/loader/rthooks/pyi_rth_pkgres.py
-missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.markers, pkg_resources._vendor.packaging.requirements
-missing module named netbios - imported by uuid
-missing module named win32wnet - imported by uuid
-missing module named __builtin__ - imported by numpy.core.numerictypes, numpy.core.numeric, numpy.distutils.misc_util, numpy.lib.function_base, numpy.lib._iotools, numpy.ma.core, numpy, pkg_resources._vendor.pyparsing
-missing module named ordereddict - imported by pkg_resources._vendor.pyparsing
-missing module named StringIO - imported by numpy.lib.utils, numpy.testing._private.utils, numpy.lib.format, pkg_resources._vendor.six
+missing module named 'pkg_resources.extern.pyparsing' - imported by pkg_resources._vendor.packaging.requirements, pkg_resources._vendor.packaging.markers
 missing module named 'win32com.shell' - imported by pkg_resources._vendor.appdirs
 missing module named 'com.sun' - imported by pkg_resources._vendor.appdirs
 missing module named com - imported by pkg_resources._vendor.appdirs
 missing module named win32api - imported by distutils.msvccompiler, pkg_resources._vendor.appdirs
 missing module named win32com - imported by pkg_resources._vendor.appdirs
+missing module named StringIO - imported by numpy.lib.utils, numpy.testing._private.utils, numpy.lib.format, pkg_resources._vendor.six
+missing module named netbios - imported by uuid
+missing module named win32wnet - imported by uuid
+missing module named __builtin__ - imported by numpy.core.numerictypes, numpy.core.numeric, numpy.distutils.misc_util, numpy.lib.function_base, numpy.lib._iotools, numpy.ma.core, numpy, pkg_resources._vendor.pyparsing
+missing module named ordereddict - imported by pkg_resources._vendor.pyparsing
 missing module named __main__ - imported by pkg_resources
 missing module named pkg_resources.extern.packaging - imported by pkg_resources.extern, pkg_resources
 missing module named pkg_resources.extern.appdirs - imported by pkg_resources.extern, pkg_resources
 missing module named 'pkg_resources.extern.six.moves' - imported by pkg_resources, pkg_resources._vendor.packaging.requirements
 missing module named pkg_resources.extern.six - imported by pkg_resources.extern, pkg_resources
-missing module named 'org.python' - imported by pickle, setuptools.sandbox, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py, xml.sax
+missing module named org - imported by pickle, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
 excluded module named _frozen_importlib - imported by importlib, importlib.abc, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
 missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
 missing module named _winreg - imported by platform, numpy.distutils.cpuinfo, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py, pkg_resources._vendor.appdirs
 missing module named java - imported by platform, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
 missing module named 'java.lang' - imported by platform, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py, xml.sax._exceptions
 missing module named vms_lib - imported by platform, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
-missing module named winreg - imported by platform, mimetypes, distutils.msvccompiler, distutils.msvc9compiler, distutils._msvccompiler, numpy.distutils.cpuinfo, urllib.request, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
-missing module named nt - imported by shutil, os, ntpath, pathlib, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
 missing module named msvcrt - imported by subprocess, multiprocessing.spawn, multiprocessing.popen_spawn_win32, numpy.distutils.mingw32ccompiler, getpass, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
 missing module named _winapi - imported by subprocess, multiprocessing.reduction, multiprocessing.connection, multiprocessing.heap, multiprocessing.popen_spawn_win32, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
+missing module named winreg - imported by platform, mimetypes, distutils.msvccompiler, distutils.msvc9compiler, distutils._msvccompiler, numpy.distutils.cpuinfo, urllib.request, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
+missing module named nt - imported by os, shutil, ntpath, pathlib, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
+missing module named 'org.python' - imported by copy, setuptools.sandbox, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py, xml.sax
 missing module named _dummy_threading - imported by dummy_threading, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
-missing module named org - imported by copy, /Users/sinabooeshaghi/Dropbox (Personal)/Caltech/Research/Syringe Pump/poseidon_controller/gui.py
 missing module named scipy - imported by numpy.testing._private.nosetester
 missing module named 'nose.util' - imported by numpy.testing._private.noseclasses
 missing module named 'nose.plugins' - imported by numpy.testing._private.noseclasses, numpy.testing._private.nosetester
