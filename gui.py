@@ -7,10 +7,16 @@ import glob
 import sys
 from datetime import datetime
 import time
+import os
 # This gets the Qt stuff
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
-import cv2
+
+import cv2 
+# note, had to use version 3.2.0.8 otherwise it had its own 
+# pyqt packages that conflicted with mine
+
 import numpy as np
 from decimal import Decimal
 # This is our window from QtCreator
