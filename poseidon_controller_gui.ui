@@ -376,6 +376,69 @@
             </item>
             <item>
              <layout class="QGridLayout" name="gridLayout_3">
+              <item row="3" column="3">
+               <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <item>
+                   <widget class="QDoubleSpinBox" name="p2_amount_INPUT"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="p2_units_LABEL_2">
+                  <property name="text">
+                   <string>[units]</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="4" column="3">
+               <layout class="QHBoxLayout" name="horizontalLayout_15">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_16">
+                  <item>
+                   <widget class="QDoubleSpinBox" name="p3_amount_INPUT"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="p3_units_LABEL_2">
+                  <property name="text">
+                   <string>[units]</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="3">
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <item>
+                   <widget class="QDoubleSpinBox" name="p1_amount_INPUT"/>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="p1_units_LABEL_2">
+                  <property name="text">
+                   <string>[units]</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
               <item row="1" column="0">
                <widget class="QLabel" name="label_23">
                 <property name="font">
@@ -395,9 +458,6 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="3">
-               <widget class="QDoubleSpinBox" name="p3_amount_INPUT"/>
-              </item>
               <item row="3" column="0">
                <widget class="QLabel" name="label_14">
                 <property name="font">
@@ -415,9 +475,6 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="3">
-               <widget class="QDoubleSpinBox" name="p2_amount_INPUT"/>
-              </item>
               <item row="4" column="0">
                <widget class="QLabel" name="label_15">
                 <property name="font">
@@ -434,9 +491,6 @@
                  <set>Qt::AlignCenter</set>
                 </property>
                </widget>
-              </item>
-              <item row="2" column="3">
-               <widget class="QDoubleSpinBox" name="p1_amount_INPUT"/>
               </item>
               <item row="1" column="2">
                <widget class="QLabel" name="label_24">
@@ -461,25 +515,6 @@
                <widget class="QLabel" name="p1_units_LABEL">
                 <property name="text">
                  <string>[units]</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="3">
-               <widget class="QLabel" name="label_10">
-                <property name="font">
-                 <font>
-                  <pointsize>15</pointsize>
-                  <weight>75</weight>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                  <underline>false</underline>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Amount </string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -566,6 +601,25 @@
                <widget class="QLabel" name="p1_syringe_LABEL">
                 <property name="text">
                  <string>syringe</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QLabel" name="label_10">
+                <property name="font">
+                 <font>
+                  <pointsize>15</pointsize>
+                  <weight>75</weight>
+                  <italic>false</italic>
+                  <bold>true</bold>
+                  <underline>false</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Amount </string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -843,19 +897,6 @@
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QPushButton" name="pushButton_4">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>PushButton</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
          </layout>
@@ -904,6 +945,13 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="experiment_notes">
+          <property name="placeholderText">
+           <string>Write notes about your experiment here. These will be appended to the end of your settings file.</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="Line" name="line_6">

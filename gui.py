@@ -10,7 +10,7 @@ import time
 # This gets the Qt stuff
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
-#import cv2
+import cv2
 import numpy as np
 from decimal import Decimal
 # This is our window from QtCreator
@@ -98,6 +98,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui = poseidon_controller_gui.Ui_MainWindow()
 		self.ui.setupUi(self)
 
+		# Put comments here
 
 		self.populate_syringe_sizes()
 		self.populate_pump_jog_delta()
@@ -118,6 +119,9 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		# Initializing multithreading to allow parallel operations
 		self.threadpool = QtCore.QThreadPool()
 		print("Multithreading with maximum %d threads" % self.threadpool.maxThreadCount())
+
+
+		# Camera setup
 		self.timer = QtCore.QTimer()
 		self.timer.setInterval(1000)
 		self.timer.timeout.connect(self.recurring_timer)
@@ -127,9 +131,6 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		# Random other things I need
 		self.image = None
 
-
-		
-		
 
 	def recurring_timer(self):
 		self.counter +=1
@@ -152,6 +153,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.is_p1_active = False
 		self.is_p2_active = False
 		self.is_p3_active = False
+
+		self.experiment_notes = ""
 
 	def thread_finished(self, th):
 		print("Your thread has completed. Now terminating..")
@@ -188,10 +191,14 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.p2_syringe_DROPDOWN.currentIndexChanged.connect(self.display_p2_syringe)
 		self.ui.p3_syringe_DROPDOWN.currentIndexChanged.connect(self.display_p3_syringe)
 
+
 		# Px speed display
 		self.ui.p1_units_DROPDOWN.currentIndexChanged.connect(self.display_p1_speed)
 		self.ui.p2_units_DROPDOWN.currentIndexChanged.connect(self.display_p2_speed)
 		self.ui.p3_units_DROPDOWN.currentIndexChanged.connect(self.display_p3_speed)
+
+
+
 		#self.populate_pump_units()
 
 		# Px amount
@@ -206,9 +213,15 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		# Action buttons
 		self.ui.run_BTN.clicked.connect(self.run)
+		
+
 		self.ui.pause_BTN.clicked.connect(self.pause)
+		
+
 		self.ui.zero_BTN.clicked.connect(self.zero)
 		self.ui.stop_BTN.clicked.connect(self.stop)
+		
+
 		self.ui.jog_plus_BTN.clicked.connect(lambda:self.jog(self.ui.jog_plus_BTN))
 		self.ui.jog_minus_BTN.clicked.connect(lambda:self.jog(self.ui.jog_minus_BTN))
 
@@ -233,6 +246,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.refresh_ports_BTN.clicked.connect(self.refresh_ports)
 		self.ui.port_DROPDOWN.currentIndexChanged.connect(self.set_port)
 
+		self.ui.experiment_notes.editingFinished.connect(self.set_experiment_notes)
+
 		# Set the log file name
 		self.date_string =  datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 		self.date_string = self.date_string.replace(":","_") # Replace semicolons with underscores
@@ -241,31 +256,56 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.p1_syringe_DROPDOWN.currentIndexChanged.connect(self.set_p1_syringe)
 		self.ui.p2_syringe_DROPDOWN.currentIndexChanged.connect(self.set_p2_syringe)
 		self.ui.p3_syringe_DROPDOWN.currentIndexChanged.connect(self.set_p3_syringe)
+		# warning to send the info to the controller
+		self.ui.p1_syringe_DROPDOWN.currentIndexChanged.connect(self.send_p1_warning)
+		self.ui.p2_syringe_DROPDOWN.currentIndexChanged.connect(self.send_p2_warning)
+		self.ui.p3_syringe_DROPDOWN.currentIndexChanged.connect(self.send_p3_warning)
 
 		# Px units
 		self.ui.p1_units_DROPDOWN.currentIndexChanged.connect(self.set_p1_units)
 		self.ui.p2_units_DROPDOWN.currentIndexChanged.connect(self.set_p2_units)
 		self.ui.p3_units_DROPDOWN.currentIndexChanged.connect(self.set_p3_units)
+		# warning to send the info to the controller
+		self.ui.p1_units_DROPDOWN.currentIndexChanged.connect(self.send_p1_warning)
+		self.ui.p2_units_DROPDOWN.currentIndexChanged.connect(self.send_p2_warning)
+		self.ui.p3_units_DROPDOWN.currentIndexChanged.connect(self.send_p3_warning)
 
 		# Px speed
 		self.ui.p1_speed_INPUT.valueChanged.connect(self.set_p1_speed)
 		self.ui.p2_speed_INPUT.valueChanged.connect(self.set_p2_speed)
 		self.ui.p3_speed_INPUT.valueChanged.connect(self.set_p3_speed)
+		# warning to send the info to the controller
+		self.ui.p1_speed_INPUT.valueChanged.connect(self.send_p1_warning)
+		self.ui.p2_speed_INPUT.valueChanged.connect(self.send_p2_warning)
+		self.ui.p3_speed_INPUT.valueChanged.connect(self.send_p3_warning)
 
 		# Px accel
 		self.ui.p1_accel_INPUT.valueChanged.connect(self.set_p1_accel)
 		self.ui.p2_accel_INPUT.valueChanged.connect(self.set_p2_accel)
 		self.ui.p3_accel_INPUT.valueChanged.connect(self.set_p3_accel)
+		# warning to send the info to the controller
+		self.ui.p1_accel_INPUT.valueChanged.connect(self.send_p1_warning)
+		self.ui.p2_accel_INPUT.valueChanged.connect(self.send_p2_warning)
+		self.ui.p3_accel_INPUT.valueChanged.connect(self.send_p3_warning)
 
 		# Px jog delta (setup)
 		self.ui.p1_setup_jog_delta_INPUT.currentIndexChanged.connect(self.set_p1_setup_jog_delta)
 		self.ui.p2_setup_jog_delta_INPUT.currentIndexChanged.connect(self.set_p2_setup_jog_delta)
 		self.ui.p3_setup_jog_delta_INPUT.currentIndexChanged.connect(self.set_p3_setup_jog_delta)
+		# warning to send the info to the contorller
+		self.ui.p1_setup_jog_delta_INPUT.currentIndexChanged.connect(self.send_p1_warning)
+		self.ui.p2_setup_jog_delta_INPUT.currentIndexChanged.connect(self.send_p2_warning)
+		self.ui.p3_setup_jog_delta_INPUT.currentIndexChanged.connect(self.send_p3_warning)
+
 
 		# Px send settings
 		self.ui.p1_setup_send_BTN.clicked.connect(self.send_p1_settings)
 		self.ui.p2_setup_send_BTN.clicked.connect(self.send_p2_settings)
 		self.ui.p3_setup_send_BTN.clicked.connect(self.send_p3_settings)
+		# remove warning to send settings
+		self.ui.p1_setup_send_BTN.clicked.connect(self.send_p1_success)
+		self.ui.p2_setup_send_BTN.clicked.connect(self.send_p2_success)
+		self.ui.p3_setup_send_BTN.clicked.connect(self.send_p3_success)
 
 		# Connect to arduino
 		self.ui.connect_BTN.clicked.connect(self.connect)
@@ -273,6 +313,24 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		# Send all the settings at once
 		self.ui.send_all_BTN.clicked.connect(self.send_all)
+
+	def send_p1_warning(self):
+		self.ui.p1_setup_send_BTN.setStyleSheet("background-color: green")
+
+	def send_p2_warning(self):
+		self.ui.p2_setup_send_BTN.setStyleSheet("background-color: green")
+
+	def send_p3_warning(self):
+		self.ui.p3_setup_send_BTN.setStyleSheet("background-color: green")
+
+	def send_p1_success(self):
+		self.ui.p1_setup_send_BTN.setStyleSheet("background-color: none")
+
+	def send_p2_success(self):
+		self.ui.p2_setup_send_BTN.setStyleSheet("background-color: none")
+
+	def send_p3_success(self):
+		self.ui.p3_setup_send_BTN.setStyleSheet("background-color: none")
 
 	def grey_out_components(self):
 		# ~~~~~~~~~~~~~~~~
@@ -303,6 +361,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.stop_BTN.setEnabled(True)
 		self.ui.jog_plus_BTN.setEnabled(True)
 		self.ui.jog_minus_BTN.setEnabled(True)
+
+		self.ui.run_BTN.setStyleSheet("background-color: green; color: black")
+		self.ui.pause_BTN.setStyleSheet("background-color: yellow; color: black")
+		self.ui.stop_BTN.setStyleSheet("background-color: red; color: black")
 
 		# ~~~~~~~~~~~~~~~~
 		# TAB : Setup
@@ -403,7 +465,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		else:
 			self.statusBar().showMessage("No pumps enabled.")
 
-
+	# Clean up this text
 	def pause(self):
 		if self.ui.pause_BTN.text() == "Pause":
 			self.statusBar().showMessage("You clicked PAUSE")
@@ -433,7 +495,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 			self.ui.pause_BTN.setText("Pause")
 
-
+	# fix
 	def zero(self):
 		self.statusBar().showMessage("You clicked ZERO")
 		testData = []
@@ -535,7 +597,9 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	# Save image to set location
 	def save_image(self):
-		# Create a date string
+		if not os.path.exists("./images"):
+			os.mkdir("images")
+
 		self.date_string =  datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 		# Replace semicolons with underscores
@@ -593,9 +657,14 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	def set_port(self):
 		self.port = self.ui.port_DROPDOWN.currentText()
 
+
+	def set_experiment_notes(self):
+		self.experiment_notes = self.ui.experiment_notes.text()
+
 	# Set the name of the log file
+	# Can probably delete
 	def set_log_file_name(self):
-		r"""
+		"""
 		Sets the file name for the current test run, enables us to log data to the file.        
 
 		Callback setter method from the 'self.ui.logFileNameInput' to set the 
@@ -610,6 +679,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.log_file_name = self.ui.log_file_name_INPUT.text() + "_" + self.date_string + ".png"
 
 	def save_settings(self):
+		# TODO: if you cancel then it gives error, fix this
+		# TODO: add comment
 		name, _ = QFileDialog.getSaveFileName(self,'Save File', options=QFileDialog.DontUseNativeDialog)
 
 		# Create a date string
@@ -641,6 +712,9 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		p3_accel 			= str(self.p3_accel)
 		p3_setup_jog_delta 	= str(self.p3_setup_jog_delta)
 
+		## Experiment Notes
+		experiment_notes = self.experiment_notes
+
 		text = []
 		text.append("File name: " + name + "\n") 				# line 0
 		text.append("Date time: " + date_string + "\n") 		# line 1
@@ -663,12 +737,13 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		text.append("P3 Speed: " + p3_speed + "\n") 			# line 17
 		text.append("P3 Accel: " + p3_accel + "\n") 			# line 18
 		text.append("P3 Jog D: " + p3_setup_jog_delta + "\n") 	# line 19
+		text.append("Exp Note: " + experiment_notes)			# line 20
 
 		with open(name, 'w') as f:
 			f.writelines(text)
 
 	def load_settings(self):
-		# need to make name an tupple otherwise i had an error and app crashed
+		# need to make name an tuple otherwise i had an error and app crashed
 		name, _ = QFileDialog.getOpenFileName(self, 'Open File', options=QFileDialog.DontUseNativeDialog)
 
 		with open(name, 'r') as f:
@@ -696,6 +771,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			p3_speed 			= text[17]
 			p3_accel 			= text[18]
 			p3_setup_jog_delta 	= text[19]
+
+			experiment_notes 	= text[20]
 
 			#print(fname, date_string, p1_syringe, p1_units, p1_speed, p1_accel, p1_setup_jog_delta)
 
@@ -732,6 +809,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		p3_setup_jog_delta_index = self.ui.p3_setup_jog_delta_INPUT.findText(p3_setup_jog_delta, QtCore.Qt.MatchFixedString)
 		self.ui.p3_setup_jog_delta_INPUT.setCurrentIndex(p3_setup_jog_delta_index)
+
+		self.ui.experiment_notes.setText(experiment_notes)
 
 		self.statusBar().showMessage("Settings loaded from: " + text[1])
 
@@ -783,6 +862,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 	# Set Px units 
 	def set_p1_units(self):
 		self.p1_units = self.ui.p1_units_DROPDOWN.currentText()
+
+		length = self.p1_units.split("/")[0]
+		self.ui.p1_units_LABEL_2.setText(length)
+
 		self.set_p1_speed()
 		self.set_p1_accel()
 		self.set_p1_setup_jog_delta()
@@ -790,6 +873,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	def set_p2_units(self):
 		self.p2_units = self.ui.p2_units_DROPDOWN.currentText()
+		
+		length = self.p2_units.split("/")[0]
+		self.ui.p2_units_LABEL_2.setText(length)
+
 		self.set_p2_speed()
 		self.set_p2_accel()
 		self.set_p2_setup_jog_delta()
@@ -797,6 +884,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 	def set_p3_units(self):
 		self.p3_units = self.ui.p3_units_DROPDOWN.currentText()
+		
+		length = self.p3_units.split("/")[0]
+		self.ui.p3_units_LABEL_2.setText(length)
+
 		self.set_p3_speed()
 		self.set_p3_accel()
 		self.set_p3_setup_jog_delta()
@@ -815,7 +906,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.p2_setup_jog_delta_INPUT.addItems(self.jog_delta)
 		self.ui.p3_setup_jog_delta_INPUT.addItems(self.jog_delta)
 
-	# Set Px speed TODO
+	# Set Px speed 
 	def set_p1_speed(self):
 		self.p1_speed = self.ui.p1_speed_INPUT.value()
 		self.ui.p1_units_LABEL.setText(str(self.p1_speed) + " " + self.ui.p1_units_DROPDOWN.currentText())
@@ -831,7 +922,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.ui.p3_units_LABEL.setText(str(self.p3_speed) + " " + self.ui.p3_units_DROPDOWN.currentText())
 		self.p3_speed_to_send = self.convert_speed(self.p3_speed, self.p3_units, self.p3_syringe_area)
 
-	# Set Px accel TODO
+	# Set Px accel 
 	def set_p1_accel(self):
 		self.p1_accel = self.ui.p1_accel_INPUT.value()
 		self.p1_accel_to_send = self.convert_accel(self.p1_accel, self.p1_units, self.p1_syringe_area)
@@ -844,7 +935,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		self.p3_accel = self.ui.p3_accel_INPUT.value()
 		self.p3_accel_to_send = self.convert_accel(self.p3_accel, self.p3_units, self.p3_syringe_area)
 
-	# Set Px jog delta (setup) TODO
+	# Set Px jog delta (setup) 
 	def set_p1_setup_jog_delta(self):
 		self.p1_setup_jog_delta = self.ui.p1_setup_jog_delta_INPUT.currentText()
 		self.p1_setup_jog_delta = float(self.ui.p1_setup_jog_delta_INPUT.currentText())
@@ -978,6 +1069,10 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 		thread.finished.connect(lambda:self.thread_finished(thread))
 		thread.start()
 
+		self.ui.p1_setup_send_BTN.setStyleSheet("background-color: none")
+		self.ui.p2_setup_send_BTN.setStyleSheet("background-color: none")
+		self.ui.p3_setup_send_BTN.setStyleSheet("background-color: none")
+
 		self.ungrey_out_components()
 
 
@@ -1074,8 +1169,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			displacement = self.uL2steps(displacement, syringe_area)
 
 		print('______________________________')
-		print("INP DISP: " + str(inp_displacement) + ' ' + length)
-		print("OUT DISP: " + str(displacement) + ' steps')
+		print("INPUT  DISPLACEMENT: " + str(inp_displacement) + ' ' + length)
+		print("OUTPUT DISPLACEMENT: " + str(displacement) + ' steps')
 		print('\n############################################################\n')
 		return displacement
 
@@ -1103,8 +1198,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 		
 
-		print("INP SPEED: " + str(inp_speed) + ' ' + units)
-		print("OUT SPEED: " + str(speed) + ' steps/s')
+		print("INPUT  SPEED: " + str(inp_speed) + ' ' + units)
+		print("OUTPUT SPEED: " + str(speed) + ' steps/s')
 		return speed
 
 	def convert_accel(self, accel, units, syringe_area):
@@ -1130,8 +1225,8 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 			accel = self.perhour2persec(self.perhour2persec(accel))
 
 		print('______________________________')
-		print("INP ACCEL: " + str(inp_accel) + ' ' + units + '/' + time)
-		print("OUT ACCEL: " + str(accel) + ' steps/s/s')
+		print("INPUT  ACCEL: " + str(inp_accel) + ' ' + units + '/' + time)
+		print("OUTPUT ACCEL: " + str(accel) + ' steps/s/s')
 		return accel
 
 
@@ -1234,7 +1329,6 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 
 
 	def listening(self):
-		# TODO print begin of a sequence
 		startMarker = self.startMarker
 		midMarker = self.midMarker
 		endMarker = self.endMarker
@@ -1256,7 +1350,7 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 				if ord(x) == midMarker:
 					i += 1
 					print(ck)
-					isDisplay = ck
+					#isDisplay = ck
 					#if i % 100 == 0:
 					#	self.ui.p1_absolute_DISP.display(ck)
 					ck = ""
@@ -1266,14 +1360,37 @@ class MainWindow(QtWidgets.QMainWindow, poseidon_controller_gui.Ui_MainWindow):
 					ck = ck + x.decode()
 
 				x = self.serial.read()
+				# TODO
 			#if isDisplay == "START":
-			#	toDisp = self.steps2mm(float(ck))
-			#	print("Pump num " + toDisp + " is now running.")i
+			#	print("This is ck: " + ck)
+				#motorID = int(ck)
+				#self.is_p1_running = True
+				#run thread(self.display_position, motorID)
+
+				#toDisp = self.steps2mm(float(ck))
+				#print("Pump num " + toDisp + " is now running.")i
 				#self.ui.p1_absolute_DISP.display(toDisp)
+				#isDisplay = ""
 
 			#self.serial.flushInput()
 			#print(self.serial.read(self.serial.inWaiting()).decode('ascii'))
+			print(ck)
 			print("\n")
+
+	# TODO
+	# def display_position(self, motorID):
+	# 	if motorID == 1:
+			
+	# 		seconds = 0
+	# 		p1_speed = self.p1_speed_to_send
+	# 		p1_dist = 0
+	# 		p1_time = p1_dist/p1_speed
+
+	# 		time_start = time.start()
+	# 		while self.is_p1_running:
+	# 			pass
+
+
 
 	def get_position(self):
 		ck = ""
@@ -1313,48 +1430,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
-
-# "<SETTING,SPEED,1,80000,F,0.0,0.0,0.0>"
-# "<SETTING,ACCEL,1,79999920,F,0.0,0.0,0.0>"
-# "<SETTING,DELTA,1,80000.0,F,0.0,0.0,0.0>"
-
-# "<SETTING,SPEED,2,80000.0,F,0.0,0.0,0.0>"
-# "<SETTING,ACCEL,2,79999920.0,F,0.0,0.0,0.0>"
-# "<SETTING,DELTA,2,80000.0,F,0.0,0.0,0.0>"
-
-# "<SETTING,SPEED,3,80000.0,F,0.0,0.0,0.0>"
-# "<SETTING,ACCEL,3,79999920.0,F,0.0,0.0,0.0>"
-# "<SETTING,DELTA,3,80000.0,F,0.0,0.0,0.0>"
-
-# ## Works
-# 	def listening(self):
-# 		startMarker = self.startMarker
-# 		midMarker = self.midMarker
-# 		endMarker = self.endMarker
-# 		x = "z"
-# 		ck = ""
-# 		i = 0
-# 		while (True):
-# 			while self.serial.inWaiting() == 0:
-# 				pass
-# 			while  ord(x) != startMarker: 
-# 				#print("THIS IS X : " + x)
-# 				x = self.serial.read()
-# 			while ord(x) != endMarker:
-# 				if ord(x) == midMarker:
-# 					i += 1
-# 					print(ck)
-# 					if i % 100 == 0:
-# 						self.ui.p1_absolute_DISP.display(ck)
-# 					ck = ""
-# 					x = self.serial.read()
-
-# 				if ord(x) != startMarker:
-# 			    #print(x)
-# 					ck = ck + x.decode()
-# 					#byteCount += 1
-
-# 				x = self.serial.read()
-# 			print(self.serial.read(self.serial.inWaiting()).decode('ascii'))
-# 			print("\n\n=============================\n\n")

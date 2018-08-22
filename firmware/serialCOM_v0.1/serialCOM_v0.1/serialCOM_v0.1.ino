@@ -150,7 +150,7 @@ unsigned long prevReplyToPCmillis = 0;
 unsigned long replyToPCinterval = 1000;
 
 //=============
-// Setup is only called once. When we start up the GUI the Arduino initalizes with a BAUD Rate of 115200
+// Setup is only called once. When we start up the GUI the Arduino initalizes with a BAUD Rate of _________
 void setup() {
   Serial.begin(BAUD_RATE);
   
